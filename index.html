@@ -1718,9 +1718,6 @@ ${fileDataStore['signature'] ? `<div style="margin-top:10px;"><div style="font-w
 </div>
 </div>
 
-<script>
-window.onload = function() { window.print(); }
-</script>
 </body>
 </html>`;
   
@@ -1730,6 +1727,7 @@ window.onload = function() { window.print(); }
     printWindow.document.open();
     printWindow.document.write(pdfContent);
     printWindow.document.close();
+    setTimeout(() => { printWindow.print(); }, 500);
   } else {
     alert('Please allow popups to generate PDF.');
   }
