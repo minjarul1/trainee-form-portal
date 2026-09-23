@@ -1130,9 +1130,7 @@ function collectFormData() {
     'income-source', 'monthly-income', 'daily-income',
     'has-bank-account', 'account-name', 'account-number', 'bank-name',
     'education-level', 'degree-name', 'institute-name', 'year-passing', 'grade', 'division-group',
-    'employment-status', 'prev-training', 'monthly-income-personal', 'training-source', 'work-experience',
-    'reassess-applying', 'reassess-reason', 'rpl-experience', 'prev-certification',
-    'assessment-center', 'assessment-date', 'rpl-remarks'
+    'employment-status', 'prev-training', 'monthly-income-personal', 'training-source', 'work-experience'
   ];
   
   const data = {};
@@ -1208,11 +1206,14 @@ function renderPreview() {
     
     <div class="preview-section">
       <div class="preview-section-title">👨‍👩‍👧 Family Profile</div>
-      <div class="preview-field"><div class="preview-label">Father's Name:</div><div class="preview-value ${isNotEmpty('father-name-en')?'highlight':''}">${getValue('father-name-en')}</div></div>
-      <div class="preview-field"><div class="preview-label">Mother's Name:</div><div class="preview-value ${isNotEmpty('mother-name-en')?'highlight':''}">${getValue('mother-name-en')}</div></div>
+      <div class="preview-field"><div class="preview-label">Father's Name (English):</div><div class="preview-value ${isNotEmpty('father-name-en')?'highlight':''}">${getValue('father-name-en')}</div></div>
+      <div class="preview-field"><div class="preview-label">Father's Name (Bangla):</div><div class="preview-value">${getValue('father-name-bn')}</div></div>
+      <div class="preview-field"><div class="preview-label">Mother's Name (English):</div><div class="preview-value ${isNotEmpty('mother-name-en')?'highlight':''}">${getValue('mother-name-en')}</div></div>
+      <div class="preview-field"><div class="preview-label">Mother's Name (Bangla):</div><div class="preview-value">${getValue('mother-name-bn')}</div></div>
       <div class="preview-field"><div class="preview-label">Emergency Contact:</div><div class="preview-value">${getValue('emergency-contact')}</div></div>
       <div class="preview-field"><div class="preview-label">Household Members:</div><div class="preview-value">${getValue('household-members')}</div></div>
       <div class="preview-field"><div class="preview-label">Monthly Income:</div><div class="preview-value ${isNotEmpty('monthly-income')?'highlight':''}">৳${getValue('monthly-income')}</div></div>
+      <div class="preview-field"><div class="preview-label">Daily Income/Person:</div><div class="preview-value">৳${getValue('daily-income')}</div></div>
       <div class="preview-field"><div class="preview-label">Bank Account:</div><div class="preview-value">${getValue('has-bank-account')}</div></div>
     </div>
     
@@ -1232,9 +1233,16 @@ function renderPreview() {
       <div class="preview-field"><div class="preview-label">Monthly Income:</div><div class="preview-value ${isNotEmpty('monthly-income-personal')?'highlight':''}">৳${getValue('monthly-income-personal')}</div></div>
       <div class="preview-field"><div class="preview-label">Training Source:</div><div class="preview-value">${getValue('training-source')}</div></div>
     </div>
+    <div class="preview-section">
+      <div class="preview-section-title">📎 Documents Uploaded</div>
+      <div class="preview-field"><div class="preview-label">Passport Photo:</div><div class="preview-value">${isNotEmpty('photo') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
+      <div class="preview-field"><div class="preview-label">Signature:</div><div class="preview-value">${isNotEmpty('signature') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
+      <div class="preview-field"><div class="preview-label">NID/ID Document:</div><div class="preview-value">${isNotEmpty('nid-doc') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
+      <div class="preview-field"><div class="preview-label">Educational Certificate:</div><div class="preview-value">${isNotEmpty('edu-cert') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
+      <div class="preview-field"><div class="preview-label">Work Experience Certificate:</div><div class="preview-value">${isNotEmpty('work-cert') ? '✅ Uploaded' : 'Not uploaded'}</div></div>
+      <div class="preview-field"><div class="preview-label">Bank Account Copy:</div><div class="preview-value">${isNotEmpty('bank-doc') ? '✅ Uploaded' : 'Not uploaded'}</div></div>
+    </div>
   `;
-  
-  document.getElementById('preview-content').innerHTML = html;
   updateProgress();
 }
 
@@ -1294,8 +1302,10 @@ function exportExcel() {
     ['District', formData['perm-district'] || '—'],
     ['Division', formData['perm-division'] || '—'],
     ['=== FAMILY ===', ''],
-    ['Father Name', formData['father-name-en'] || '—'],
-    ['Mother Name', formData['mother-name-en'] || '—'],
+    ['Father Name (English)', formData['father-name-en'] || '—'],
+    ['Father Name (Bangla)', formData['father-name-bn'] || '—'],
+    ['Mother Name (English)', formData['mother-name-en'] || '—'],
+    ['Mother Name (Bangla)', formData['mother-name-bn'] || '—'],
     ['Monthly Income', formData['monthly-income'] || '—'],
     ['Bank Account', formData['has-bank-account'] || 'No'],
     ['=== EDUCATION ===', ''],
@@ -1324,6 +1334,23 @@ function submitForm() {
     alert('✅ Form submitted successfully!\n\nThank you for your registration.');
   }
 }
+
+// Bengali input validation - only allow Bengali characters
+function allowBanglaOnly(input) {
+  input.addEventListener('input', function(e) {
+    // Allow Bengali Unicode range: 0980-09FF
+    this.value = this.value.replace(/[^\u0980-\u09FF\s]/g, '');
+  });
+}
+
+// Apply Bengali-only validation to Bangla name fields
+document.addEventListener('DOMContentLoaded', function() {
+  const banglaFields = ['full-name-bn', 'father-name-bn', 'mother-name-bn'];
+  banglaFields.forEach(id => {
+    const el = document.getElementById(id);
+    if(el) allowBanglaOnly(el);
+  });
+});
 
 // Initialize
 window.onload = loadData;
