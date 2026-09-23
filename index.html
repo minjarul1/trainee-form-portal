@@ -279,6 +279,15 @@ textarea {
   background: rgba(59,130,246,0.02);
 }
 
+.file-upload.uploaded {
+  border-color: var(--success);
+  background: rgba(16,185,129,0.05);
+}
+
+.file-upload.uploaded .file-upload-icon {
+  color: var(--success);
+}
+
 .file-upload input {
   display: none;
 }
@@ -1345,6 +1354,38 @@ function allowBanglaOnly(input) {
   });
 }
 
+// File upload handling - show selected filename
+function initFileUploads() {
+  const fileInputs = ['photo', 'signature', 'nid-doc', 'edu-cert', 'work-cert', 'bank-doc'];
+  
+  fileInputs.forEach(id => {
+    const input = document.getElementById(id);
+    if(!input) return;
+    
+    input.addEventListener('change', function(e) {
+      const label = this.closest('.form-group').querySelector('label:first-child');
+      const uploadContainer = this.closest('.file-upload');
+      
+      if(this.files && this.files[0]) {
+        const fileName = this.files[0].name;
+        const fileSize = (this.files[0].size / 1024 / 1024).toFixed(2);
+        
+        if(uploadContainer) {
+          uploadContainer.classList.add('uploaded');
+          uploadContainer.querySelector('.file-upload-text').innerHTML = 
+            `✅ ${fileName}<br><small>${fileSize} MB</small>`;
+        }
+      } else {
+        if(uploadContainer) {
+          uploadContainer.classList.remove('uploaded');
+          uploadContainer.querySelector('.file-upload-text').innerHTML = 
+            'Click to upload<br><small>JPG, PNG (Max 5MB)</small>';
+        }
+      }
+    });
+  });
+}
+
 // Apply Bengali-only validation to Bangla name fields
 document.addEventListener('DOMContentLoaded', function() {
   const banglaFields = ['full-name-bn', 'father-name-bn', 'mother-name-bn'];
@@ -1352,6 +1393,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const el = document.getElementById(id);
     if(el) allowBanglaOnly(el);
   });
+  
+  // Initialize file upload handlers
+  initFileUploads();
 });
 
 // Initialize
