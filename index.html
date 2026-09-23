@@ -526,27 +526,81 @@ textarea {
   .preview-label { width: 100%; }
 }
 
-/* Print Styles - Match Word format */
+/* Print Styles - Compact 2-page format matching Word export */
 @media print {
+  @page { 
+    size: A4; 
+    margin: 0.5in 0.5in 0.5in 0.5in;
+  }
+  
   .header, .nav-tabs, .btn-group, .action-cards { display: none !important; }
-  body { background: white; }
+  body { 
+    background: white; 
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8pt;
+    line-height: 1.3;
+  }
+  
   .form-section { 
     display: block !important; 
     box-shadow: none;
     border: none;
     padding: 0;
-    page-break-after: always;
+    margin: 0;
   }
+  
   #preview-section .form-section { display: block !important; }
-  .preview-container { box-shadow: none; border: none; padding: 0; }
-  h1 { font-size: 20pt; }
-  h2 { 
-    background: #f8fafc !important;
-    border-left: 4px solid #3b82f6 !important;
-    page-break-after: avoid;
+  .preview-container { 
+    box-shadow: none; 
+    border: none; 
+    padding: 0;
+    width: 100%;
   }
-  table { page-break-inside: avoid; }
-  tr { page-break-inside: avoid; }
+  
+  /* Compact header */
+  .preview-header {
+    margin-bottom: 8px !important;
+    padding-bottom: 5px !important;
+  }
+  .preview-header h1 {
+    font-size: 14pt !important;
+    margin-bottom: 2px !important;
+  }
+  .preview-header p {
+    font-size: 7pt !important;
+    margin: 1px 0 !important;
+  }
+  
+  /* Compact sections */
+  .preview-section {
+    margin-bottom: 8px !important;
+    page-break-inside: avoid;
+  }
+  .preview-section-title {
+    font-size: 9pt !important;
+    padding: 3px 6px !important;
+    margin-bottom: 3px !important;
+    background: #f0f0f0 !important;
+    border-left: 3px solid #333 !important;
+  }
+  
+  /* Compact fields */
+  .preview-field {
+    padding: 2px 0 !important;
+    border-bottom: 1px solid #ccc !important;
+    font-size: 7.5pt !important;
+  }
+  .preview-label {
+    width: 28% !important;
+    font-size: 7.5pt !important;
+    font-weight: bold !important;
+  }
+  .preview-value {
+    font-size: 7.5pt !important;
+  }
+  
+  /* Action cards hidden */
+  .action-cards { display: none !important; }
 }
 </style>
 </head>
