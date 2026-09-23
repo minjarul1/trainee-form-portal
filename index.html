@@ -1584,17 +1584,131 @@ ${fileDataStore['signature'] ? `
   URL.revokeObjectURL(a.href);
 }
 
-// Export PDF - generate PDF file with html2pdf
+// Export PDF - generate PDF matching Word format
 async function exportPDF() {
+  const getValue = (id) => formData[id] || '—';
+  const isNotEmpty = (id) => !!formData[id];
+  
   // Show loading state
-  const btn = document.querySelector('.btn-secondary');
-  if(btn) {
-    btn.textContent = 'Generating PDF...';
-    btn.disabled = true;
+  const btn = document.querySelector('.action-card');
+  const pdfBtn = btn.closest('.action-card') || document.querySelector('.btn-secondary');
+  if(pdfBtn) {
+    pdfBtn.disabled = true;
+    pdfBtn.textContent = 'Generating PDF...';
   }
   
   try {
-    const element = document.getElementById('preview-section');
+    // Create PDF content matching Word format
+    const pdfContent = `
+      <div style="font-family: 'Courier New', Courier, monospace; font-size: 8pt; color: #000; line-height: 1.3;">
+        <h1 style="text-align: center; font-size: 14pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase; letter-spacing: 1px;">Trainee Registration Form</h1>
+        <div style="text-align: center; font-size: 7pt; color: #666; margin: 0 0 8px 0;">ISISC-ASSET Project | EBT | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
+        
+        <!-- PAGE 1 -->
+        <h2 style="font-size: 9pt; font-weight: bold; margin: 8px 0 4px 0; padding: 3px 6px; background: #f0f0f0; border-left: 3px solid #333; text-transform: uppercase;">Personal Information</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 7.5pt;">
+          <tr><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 28%;">Field</th><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 72%;">Details</th></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Name (English)</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('full-name-en')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Name (Bangla)</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('full-name-bn')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Date of Birth</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('dob')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Gender</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('gender')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Nationality</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('nationality')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Religion</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('religion')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">ID Type</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('id-type')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">ID Number</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('id-number')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Contact</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('contact')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Email</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('email')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">PWD</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('pwd')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Marital Status</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('marital-status')}</td></tr>
+        </table>
+        
+        <h2 style="font-size: 9pt; font-weight: bold; margin: 8px 0 4px 0; padding: 3px 6px; background: #f0f0f0; border-left: 3px solid #333; text-transform: uppercase;">Address Information</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 7.5pt;">
+          <tr><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 28%;">Field</th><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 72%;">Details</th></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Permanent Address</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('perm-address')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Division</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('perm-division')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">District</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('perm-district')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Upazila</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('perm-upazila')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Area Type</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('perm-area-type')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Post Code</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('perm-post-code')}</td></tr>
+        </table>
+        
+        <div style="page-break-after: always;"></div>
+        
+        <!-- PAGE 2 -->
+        <h2 style="font-size: 9pt; font-weight: bold; margin: 8px 0 4px 0; padding: 3px 6px; background: #f0f0f0; border-left: 3px solid #333; text-transform: uppercase;">Family Profile</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 7.5pt;">
+          <tr><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 28%;">Field</th><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 72%;">Details</th></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Father (English)</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('father-name-en')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Father (Bangla)</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('father-name-bn')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Mother (English)</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('mother-name-en')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Mother (Bangla)</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('mother-name-bn')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Emergency Contact</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('emergency-contact')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Household Members</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('household-members')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Monthly Income</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('monthly-income')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Daily Income</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('daily-income')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Bank Account</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('has-bank-account')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Account Name</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('account-name')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Account Number</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('account-number')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Bank Name</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('bank-name')}</td></tr>
+        </table>
+        
+        <h2 style="font-size: 9pt; font-weight: bold; margin: 8px 0 4px 0; padding: 3px 6px; background: #f0f0f0; border-left: 3px solid #333; text-transform: uppercase;">Education</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 7.5pt;">
+          <tr><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 28%;">Field</th><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 72%;">Details</th></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Education Level</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('education-level')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Degree/Diploma</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('degree-name')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Institute</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('institute-name')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Year Passing</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('year-passing')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Grade/Division</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('grade')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Division/Group</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('division-group')}</td></tr>
+        </table>
+        
+        <h2 style="font-size: 9pt; font-weight: bold; margin: 8px 0 4px 0; padding: 3px 6px; background: #f0f0f0; border-left: 3px solid #333; text-transform: uppercase;">Employment & Skills</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 7.5pt;">
+          <tr><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 28%;">Field</th><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 72%;">Details</th></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Employment Status</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('employment-status')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Previous Training</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('prev-training')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Monthly Income</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('monthly-income-personal')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Training Source</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('training-source')}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Work Experience</td><td style="padding: 3px 6px; border: 1px solid #999;">${getValue('work-experience')}</td></tr>
+        </table>
+        
+        <h2 style="font-size: 9pt; font-weight: bold; margin: 8px 0 4px 0; padding: 3px 6px; background: #f0f0f0; border-left: 3px solid #333; text-transform: uppercase;">Documents Status</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 7.5pt;">
+          <tr><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 28%;">Document</th><th style="background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 72%;">Status</th></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Passport Photo</td><td style="padding: 3px 6px; border: 1px solid #999; color: ${isNotEmpty('photo') ? '#008000' : '#cc0000'}; font-weight: bold;">${isNotEmpty('photo') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Signature</td><td style="padding: 3px 6px; border: 1px solid #999; color: ${isNotEmpty('signature') ? '#008000' : '#cc0000'}; font-weight: bold;">${isNotEmpty('signature') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">NID/ID Document</td><td style="padding: 3px 6px; border: 1px solid #999; color: ${isNotEmpty('nid-doc') ? '#008000' : '#cc0000'}; font-weight: bold;">${isNotEmpty('nid-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Educational Cert</td><td style="padding: 3px 6px; border: 1px solid #999; color: ${isNotEmpty('edu-cert') ? '#008000' : '#cc0000'}; font-weight: bold;">${isNotEmpty('edu-cert') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Work Cert</td><td style="padding: 3px 6px; border: 1px solid #999; color: ${isNotEmpty('work-cert') ? '#008000' : '#cc0000'}; font-weight: bold;">${isNotEmpty('work-cert') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+          <tr><td style="padding: 3px 6px; border: 1px solid #999; background: #fafafa; font-weight: bold;">Bank Copy</td><td style="padding: 3px 6px; border: 1px solid #999; color: ${isNotEmpty('bank-doc') ? '#008000' : '#cc0000'}; font-weight: bold;">${isNotEmpty('bank-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+        </table>
+        
+        ${fileDataStore['photo'] ? `<div style="margin-top:10px;"><div style="font-weight:bold; margin-bottom:5px; font-size:8pt;">PASSPORT PHOTO</div><img src="${fileDataStore['photo']}" style="width:80px; height:100px; object-fit:cover; border:1px solid #999;" /></div>` : ''}
+        ${fileDataStore['signature'] ? `<div style="margin-top:10px;"><div style="font-weight:bold; margin-bottom:5px; font-size:8pt;">SIGNATURE</div><img src="${fileDataStore['signature']}" style="width:120px; height:40px; object-fit:contain; border:1px solid #999;" /></div>` : ''}
+        
+        <div style="margin-top:15px;">
+          <h2 style="font-size: 9pt; font-weight: bold; margin: 8px 0 4px 0; padding: 3px 6px; background: #f0f0f0; border-left: 3px solid #333; text-transform: uppercase;">Signatures</h2>
+          <div style="display: flex; gap: 20px; margin-top: 10px;">
+            <div style="flex: 1; text-align: center; padding: 8px; border: 1px solid #999;">
+              <div style="font-weight:bold; margin-bottom:3px;">TRAINEE SIGNATURE</div>
+              ${fileDataStore['signature'] ? `<img src="${fileDataStore['signature']}" style="width:100%; height:40px; object-fit:contain; margin:5px 0;" />` : '<div style="border-bottom: 1px solid #000; margin: 20px 15px 5px 15px;"></div>'}
+              <div style="font-size:6pt; margin-top:3px;">Date: _______________</div>
+            </div>
+            <div style="flex: 1; text-align: center; padding: 8px; border: 1px solid #999;">
+              <div style="font-weight:bold; margin-bottom:3px;">AUTHORIZED SIGNATORY</div>
+              <div style="border-bottom: 1px solid #000; margin: 20px 15px 5px 15px;"></div>
+              <div style="font-size:6pt; margin-top:3px;">Designation: ___________</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    const element = document.createElement('div');
+    element.innerHTML = pdfContent;
+    document.body.appendChild(element);
     
     const opt = {
       margin:       0.5,
@@ -1605,13 +1719,15 @@ async function exportPDF() {
     };
     
     await html2pdf().set(opt).from(element).save();
+    document.body.removeChild(element);
+    
   } catch(err) {
     console.error('PDF generation failed:', err);
     alert('❌ PDF generation failed. Please try again.');
   } finally {
-    if(btn) {
-      btn.textContent = 'Export PDF';
-      btn.disabled = false;
+    if(pdfBtn) {
+      pdfBtn.disabled = false;
+      pdfBtn.textContent = 'Export PDF';
     }
   }
 }
