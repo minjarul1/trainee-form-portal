@@ -1243,6 +1243,8 @@ function renderPreview() {
       <div class="preview-field"><div class="preview-label">Bank Account Copy:</div><div class="preview-value">${isNotEmpty('bank-doc') ? '✅ Uploaded' : 'Not uploaded'}</div></div>
     </div>
   `;
+
+  document.getElementById('preview-content').innerHTML = html;
   updateProgress();
 }
 
