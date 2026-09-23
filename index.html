@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trainee Registration & RPL Assessment Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root {
+  --navy:#16233F;
+  --navy-2:#223357;
+  --parchment:#F7F3EA;
+  --paper:#FFFDF8;
+  --ink:#2A2620;
+  --ink-soft:#6B6355;
+  --line:#DCD3BF;
+  --teal:#1F6F64;
+  --teal-soft:#E4F1EE;
+  --rust:#A13D2B;
+  --rust-soft:#F7E7E2;
+  --gold:#B08D2B;
+  --gold-soft:#F6EFDC;
+  --radius:10px;
+  --serif:'Tiro Bangla', 'Noto Serif Bengali', serif;
+  --sans:'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+  --mono:'JetBrains Mono', monospace;
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--parchment); color:var(--ink); font-family:var(--sans); background-image:linear-gradient(var(--parchment) 0, var(--parchment) 100%), repeating-linear-gradient(180deg, transparent 0 39px, rgba(22,35,63,0.035) 39px 40px);}
+.app-header{background:var(--navy); color:#F3EFE2; padding:22px 28px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; border-bottom:4px solid var(--gold);}
+.app-header h1{font-family:var(--serif); font-size:26px; margin:0 0 4px; letter-spacing:0.3px;}
+.app-header p{margin:0; font-size:14px; color:#C9C2AC;}
+.header-mark{width:52px; height:52px; border:2px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:22px; color:var(--gold); flex-shrink:0;}
+.tabs{display:flex; gap:2px; padding:0 28px; background:var(--navy-2); overflow-x:auto;}
+.tab-btn{font-family:var(--sans); font-size:15px; font-weight:600; color:#C9C2AC; background:transparent; border:none; padding:14px 22px; cursor:pointer; border-bottom:3px solid transparent; transition:all 0.2s;}
+.tab-btn:hover{color:#F3EFE2; background:rgba(255,255,255,0.05);}
+.tab-btn.active{color:var(--gold); border-bottom-color:var(--gold); background:var(--parchment);}
+main{max-width:1100px; margin:28px auto; padding:0 20px;}
+.form-section{background:var(--paper); border-radius:var(--radius); padding:28px; margin-bottom:24px; box-shadow:0 1px 3px rgba(22,35,63,0.06); border:1px solid var(--line);}
+.form-section h2{font-family:var(--serif); font-size:20px; color:var(--navy); margin:0 0 20px; padding-bottom:10px; border-bottom:2px solid var(--line);}
+.field-group{margin-bottom:16px;}
+.field-row{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;}
+label{display:block; font-size:13px; font-weight:600; color:var(--ink-soft); margin-bottom:5px;}
+label .req{color:var(--rust); margin-left:2px;}
+input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"], select, textarea{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:6px; font-size:14px; font-family:var(--sans); background:#fff; color:var(--ink); transition:border-color 0.2s;}
+input:focus, select:focus, textarea:focus{outline:none; border-color:var(--teal); box-shadow:0 0 0 3px rgba(31,111,100,0.1);}
+textarea{resize:vertical; min-height:80px;}
+button{padding:10px 20px; border:none; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; font-family:var(--sans);}
+.btn-primary{background:var(--teal); color:#fff;}
+.btn-primary:hover{background:#174F46;}
+.btn-secondary{background:var(--navy); color:#F3EFE2;}
+.btn-secondary:hover{background:#0F1A2E;}
+.btn-outline{background:transparent; border:1px solid var(--line); color:var(--ink);}
+.btn-outline:hover{background:var(--parchment);}
+.toolbar{display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; padding-top:20px; border-top:1px solid var(--line);}
+.hidden{display:none !important;}
+#form-preview{display:none;}
+@media print{.tabs, .toolbar, .app-header{display:none !important;} body{background:#fff;} #form-print-view{display:block !important;}}
+#form-print-view{font-family:'Times New Roman', serif; padding:40px; display:none;}
+.print-header{text-align:center; border-bottom:2px solid #000; padding-bottom:20px; margin-bottom:30px;}
+.print-header h1{margin:0; font-size:24px;}
+.print-field{display:flex; margin-bottom:8px; border-bottom:1px dotted #ccc; padding-bottom:4px;}
+.print-field .label{width:200px; font-weight:600;}
+.print-field .value{flex:1;}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div>
+    <h1>📝 Trainee Registration & RPL Assessment</h1>
+    <p>ফর্ম পূরণ করুন এবং PDF/Word রপ্তানি করুন</p>
+  </div>
+  <div class="header-mark">TR</div>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" onclick="showTab('form1')">📋 Form 1: Trainee Registration</button>
+  <button class="tab-btn" onclick="showTab('form2')">📋 Form 2: RPL Assessment</button>
+  <button class="tab-btn" onclick="showTab('preview')">👁 Preview</button>
+</nav>
+
+<main>
+  <!-- FORM 1: Trainee Registration -->
+  <section id="form1" class="tab-content">
+    <div class="form-section">
+      <h2>👤 Personal Data</h2>
+      <div class="field-row">
+        <div class="field-group"><label>Trainee Name (English)<span class="req">*</span></label><input type="text" id="t-name-en" placeholder="John Doe"></div>
+        <div class="field-group"><label>Trainee Name (Bangla)<span class="req">*</span></label><input type="text" id="t-name-bn" placeholder="জন ডো"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Date of Birth<span class="req">*</span></label><input type="date" id="t-dob"></div>
+        <div class="field-group"><label>Identification Type<span class="req">*</span></label><select id="t-id-type"><option value="">Select...</option><option>NID</option><option>Birth Certificate</option><option>Passport</option></select></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Sex<span class="req">*</span></label><select id="t-sex"><option value="">Select...</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+        <div class="field-group"><label>PWD?<span class="req">*</span></label><select id="t-pwd"><option>No</option><option>Yes</option></select></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Contact Number<span class="req">*</span></label><input type="tel" id="t-contact" placeholder="+880 1XXX-XXXXXX"></div>
+        <div class="field-group"><label>Email ID</label><input type="email" id="t-email" placeholder="example@email.com"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Photo</label><input type="file" id="t-photo" accept="image/*"></div>
+        <div class="field-group"><label>NID/Birth Certificate/Passport No<span class="req">*</span></label><input type="text" id="t-id-no" placeholder="Enter identification number"></div>
+      </div>
+      <div class="field-group"><label>Signature Photo</label><input type="file" id="t-signature" accept="image/*"></div>
+    </div>
+
+    <div class="form-section">
+      <h2>🏠 Permanent Address</h2>
+      <div class="field-row">
+        <div class="field-group"><label>Division<span class="req">*</span></label><select id="perm-division"><option value="">Select...</option><option>Dhaka</option><option>Chittagong</option><option>Rajshahi</option><option>Khulna</option><option>Sylhet</option><option>Rangpur</option><option>Mymensingh</option><option>Barishal</option></select></div>
+        <div class="field-group"><label>District<span class="req">*</span></label><input type="text" id="perm-district" placeholder="District name"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Upazila<span class="req">*</span></label><input type="text" id="perm-upazila" placeholder="Upazila name"></div>
+        <div class="field-group"><label>From Rural or Urban?<span class="req">*</span></label><select id="perm-area"><option value="">Select...</option><option>Rural</option><option>Urban</option></select></div>
+      </div>
+      <div class="field-group"><label>Address<span class="req">*</span></label><textarea id="perm-address" placeholder="Full permanent address"></textarea></div>
+    </div>
+
+    <div class="form-section">
+      <h2>🏢 Present Address</h2>
+      <button type="button" class="btn-outline" onclick="copyPermanentAddress()">📋 Same as Permanent Address</button>
+      <div class="field-row" style="margin-top:16px;">
+        <div class="field-group"><label>Division<span class="req">*</span></label><select id="pres-division"><option value="">Select...</option><option>Dhaka</option><option>Chittagong</option><option>Rajshahi</option><option>Khulna</option><option>Sylhet</option><option>Rangpur</option><option>Mymensingh</option><option>Barishal</option></select></div>
+        <div class="field-group"><label>District<span class="req">*</span></label><input type="text" id="pres-district" placeholder="District name"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Upazila<span class="req">*</span></label><input type="text" id="pres-upazila" placeholder="Upazila name"></div>
+        <div class="field-group"><label>Religion</label><select id="pres-religion"><option value="">Select...</option><option>Islam</option><option>Hinduism</option><option>Christianity</option><option>Buddhism</option><option>Other</option></select></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Ethnicity</label><input type="text" id="pres-ethnicity" placeholder="e.g., Bengali, tribal"></div>
+        <div class="field-group"><label>Educational Qualification</label><select id="pres-edu"><option value="">Select...</option><option>Primary</option><option>JSC/Dakhil</option><option>SSC/HSC</option><option>Equivalent</option><option>Undergraduate</option><option>Postgraduate</option></select></div>
+      </div>
+      <div class="field-group"><label>Address</label><textarea id="pres-address" placeholder="Present address"></textarea></div>
+      <div class="field-group"><label>Marital Status</label><select id="pres-marital"><option value="">Select...</option><option>Single</option><option>Married</option><option>Divorced</option><option>Widowed</option></select></div>
+    </div>
+
+    <div class="form-section">
+      <h2>🏘️ Household Profile</h2>
+      <div class="field-row">
+        <div class="field-group"><label>Father's Name (English)<span class="req">*</span></label><input type="text" id="hh-father-en" placeholder="Father's name"></div>
+        <div class="field-group"><label>Father's Name (Bangla)</label><input type="text" id="hh-father-bn" placeholder="পিতার নাম"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Mother's Name (English)<span class="req">*</span></label><input type="text" id="hh-mother-en" placeholder="Mother's name"></div>
+        <div class="field-group"><label>Mother's Name (Bangla)</label><input type="text" id="hh-mother-bn" placeholder="মাতার নাম"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Emergency Contact Number</label><input type="tel" id="hh-emergency" placeholder="+880 1XXX-XXXXXX"></div>
+        <div class="field-group"><label>Number of Household Members</label><input type="number" id="hh-members" placeholder="Total members"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Source of Household Income</label><select id="hh-income-source"><option value="">Select...</option><option>Agriculture</option><option>Business</option><option>Salary</option><option>Remittance</option><option>Other</option></select></div>
+        <div class="field-group"><label>Monthly Household Income (BDT)</label><input type="number" id="hh-income-monthly" placeholder="Amount in BDT"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Income per Person per Day (BDT)</label><input type="number" id="hh-income-per-day" placeholder="Calculated" readonly></div>
+        <div class="field-group"><label>Do you have any Bank Account?<span class="req">*</span></label><select id="hh-bank"><option>No</option><option>Yes</option></select></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>🛠️ Skills & Experience</h2>
+      <div class="field-row">
+        <div class="field-group"><label>Received any skills training in the past?<span class="req">*</span></label><select id="sk-prev-training"><option>No</option><option>Yes</option></select></div>
+        <div class="field-group"><label>Employment status before training<span class="req">*</span></label><select id="sk-employment"><option>Unemployed</option><option>Self-employed</option><option>Employed</option><option>Student</option></select></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Monthly Income (BDT) - Cash<span class="req">*</span></label><input type="number" id="sk-income" placeholder="Amount in BDT"></div>
+        <div class="field-group"><label>How did you learn about this training?<span class="req">*</span></label><input type="text" id="sk-source" placeholder="e.g., Facebook, Friend, NGO"></div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn-primary" onclick="saveFormData()">💾 Save Data</button>
+      <button class="btn-secondary" onclick="clearForm()">🗑️ Clear Form</button>
+      <button class="btn-outline" onclick="showTab('preview'); renderPreview();">👁 Preview</button>
+    </div>
+  </section>
+
+  <!-- FORM 2: RPL Assessment -->
+  <section id="form2" class="tab-content hidden">
+    <div class="form-section">
+      <h2>📋 Top Section</h2>
+      <div class="field-group">
+        <label>Applying for Re-assessment?<span class="req">*</span></label>
+        <select id="rpl-reassess"><option>No</option><option>Yes</option></select>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>👤 Personal Information</h2>
+      <div class="field-row">
+        <div class="field-group"><label>Name in English<span class="req">*</span></label><input type="text" id="rpl-name-en" placeholder="Candidate name"></div>
+        <div class="field-group"><label>Name in Bangla</label><input type="text" id="rpl-name-bn" placeholder="প্রার্থীর নাম"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Mobile Number<span class="req">*</span></label><input type="tel" id="rpl-mobile" placeholder="+880 1XXX-XXXXXX"></div>
+        <div class="field-group"><label>Confirm Mobile Number</label><input type="tel" id="rpl-mobile-confirm" placeholder="+880 1XXX-XXXXXX"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Email</label><input type="email" id="rpl-email" placeholder="candidate@email.com"></div>
+        <div class="field-group"><label>Date of Birth<span class="req">*</span></label><input type="date" id="rpl-dob"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Gender<span class="req">*</span></label><select id="rpl-gender"><option>Male</option><option>Female</option><option>Other</option></select></div>
+        <div class="field-group"><label>Person with Disability?<span class="req">*</span></label><select id="rpl-pwd"><option>No</option><option>Yes</option></select></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Nationality</label><input type="text" id="rpl-nationality" value="Bangladeshi"></div>
+        <div class="field-group"><label>Religion</label><select id="rpl-religion"><option>Islam</option><option>Hinduism</option><option>Christianity</option><option>Buddhism</option><option>Other</option></select></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Identification Type<span class="req">*</span></label><select id="rpl-id-type"><option>NID</option><option>Birth Certificate</option><option>Passport</option></select></div>
+        <div class="field-group"><label>Passport Number</label><input type="text" id="rpl-passport" placeholder="If applicable"></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>👨‍👩‍👧 Parental Information</h2>
+      <div class="field-row">
+        <div class="field-group"><label>Father's Name (English)<span class="req">*</span></label><input type="text" id="rpl-father-en" placeholder="Father's name"></div>
+        <div class="field-group"><label>Father's Name (Bangla)</label><input type="text" id="rpl-father-bn" placeholder="পিতার নাম"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Mother's Name (English)</label><input type="text" id="rpl-mother-en" placeholder="Mother's name"></div>
+        <div class="field-group"><label>Mother's Name (Bangla)</label><input type="text" id="rpl-mother-bn" placeholder="মাতার নাম"></div>
+      </div>
+      <div class="field-group"><label>Guardian's Name (English)</label><input type="text" id="rpl-guardian" placeholder="If applicable"></div>
+    </div>
+
+    <div class="form-section">
+      <h2>📬 Mailing/Present Address</h2>
+      <div class="field-row">
+        <div class="field-group"><label>Care Of</label><input type="text" id="rpl-cot-present" placeholder="c/o father's name"></div>
+        <div class="field-group"><label>Village/Town/Road/House<span class="req">*</span></label><input type="text" id="rpl-village" placeholder="Village or road"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Division<span class="req">*</span></label><select id="rpl-division"><option value="">Select...</option><option>Dhaka</option><option>Chittagong</option><option>Rajshahi</option><option>Khulna</option><option>Sylhet</option><option>Rangpur</option><option>Mymensingh</option><option>Barishal</option></select></div>
+        <div class="field-group"><label>District<span class="req">*</span></label><input type="text" id="rpl-district" placeholder="District name"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Upazila<span class="req">*</span></label><input type="text" id="rpl-upazila" placeholder="Upazila name"></div>
+        <div class="field-group"><label>Post Office</label><input type="text" id="rpl-post-office" placeholder="Post office"></div>
+      </div>
+      <div class="field-group"><label>Post Code</label><input type="text" id="rpl-post-code" placeholder="e.g., 1205"></div>
+    </div>
+
+    <div class="form-section">
+      <h2>🏠 Permanent Address</h2>
+      <button type="button" class="btn-outline" onclick="copyRPLPresentToPermanent()">📋 Same as Present Address</button>
+      <div class="field-row" style="margin-top:16px;">
+        <div class="field-group"><label>Care Of</label><input type="text" id="rpl-cot-perm" placeholder="c/o father's name"></div>
+        <div class="field-group"><label>Village/Town/Road/House<span class="req">*</span></label><input type="text" id="rpl-village-perm" placeholder="Village or road"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Division<span class="req">*</span></label><select id="rpl-division-perm"><option value="">Select...</option><option>Dhaka</option><option>Chittagong</option><option>Rajshahi</option><option>Khulna</option><option>Sylhet</option><option>Rangpur</option><option>Mymensingh</option><option>Barishal</option></select></div>
+        <div class="field-group"><label>District<span class="req">*</span></label><input type="text" id="rpl-district-perm" placeholder="District name"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Upazila<span class="req">*</span></label><input type="text" id="rpl-upazila-perm" placeholder="Upazila name"></div>
+        <div class="field-group"><label>Post Office</label><input type="text" id="rpl-post-office-perm" placeholder="Post office"></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>🎓 Educational Background & Experience</h2>
+      <div class="field-row">
+        <div class="field-group"><label>Name of Degree<span class="req">*</span></label><input type="text" id="rpl-degree" placeholder="e.g., SSC, HSC, Diploma"></div>
+        <div class="field-group"><label>Year of Passing</label><input type="number" id="rpl-year" placeholder="e.g., 2023"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Institute</label><input type="text" id="rpl-institute" placeholder="Institute name"></div>
+        <div class="field-group"><label>CGPA/Division</label><input type="text" id="rpl-cgpa" placeholder="e.g., 3.50, First Division"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Relevant Experience (years)</label><input type="number" id="rpl-exp" placeholder="Years of experience"></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>📎 Upload Documents</h2>
+      <div class="field-row">
+        <div class="field-group"><label>Upload Photo</label><input type="file" id="rpl-photo" accept="image/*"></div>
+        <div class="field-group"><label>Upload Signature</label><input type="file" id="rpl-signature" accept="image/*"></div>
+      </div>
+      <div class="field-row">
+        <div class="field-group"><label>Upload NID/Birth Reg/Passport</label><input type="file" id="rpl-id-doc" accept="image/*,.pdf"></div>
+        <div class="field-group"><label>Evidence of Work/Certificate</label><input type="file" id="rpl-work-evidence" accept="image/*,.pdf"></div>
+      </div>
+      <div class="field-group"><label>Remarks</label><textarea id="rpl-remarks" placeholder="Additional notes..."></textarea></div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn-primary" onclick="saveRPLData()">💾 Save Data</button>
+      <button class="btn-secondary" onclick="clearRPLForm()">🗑️ Clear Form</button>
+      <button class="btn-outline" onclick="showTab('preview'); renderPreview();">👁 Preview</button>
+    </div>
+  </section>
+
+  <!-- PREVIEW SECTION -->
+  <section id="preview" class="tab-content hidden">
+    <div class="form-section">
+      <h2>📄 Form Preview</h2>
+      <div id="preview-content" style="padding:20px; background:#f5f5f5; border-radius:8px; min-height:200px;"></div>
+      <div class="toolbar">
+        <button class="btn-primary" onclick="exportPDF()">🖨️ Export PDF</button>
+        <button class="btn-secondary" onclick="exportWord()">📝 Export Word (.doc)</button>
+        <button class="btn-outline" onclick="exportExcel()">📊 Export Excel</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="form-print-view"></div>
+
+<script>
+let currentTab = 'form1';
+let formData = {form1: {}, form2: {}};
+
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(tab).classList.remove('hidden');
+  event.target.classList.add('active');
+  currentTab = tab;
+}
+
+function copyPermanentAddress() {
+  document.getElementById('pres-division').value = document.getElementById('perm-division').value;
+  document.getElementById('pres-district').value = document.getElementById('perm-district').value;
+  document.getElementById('pres-upazila').value = document.getElementById('perm-upazila').value;
+  document.getElementById('pres-address').value = document.getElementById('perm-address').value;
+}
+
+function copyRPLPresentToPermanent() {
+  document.getElementById('rpl-cot-perm').value = document.getElementById('rpl-cot-present').value;
+  document.getElementById('rpl-village-perm').value = document.getElementById('rpl-village').value;
+  document.getElementById('rpl-division-perm').value = document.getElementById('rpl-division').value;
+  document.getElementById('rpl-district-perm').value = document.getElementById('rpl-district').value;
+  document.getElementById('rpl-upazila-perm').value = document.getElementById('rpl-upazila').value;
+  document.getElementById('rpl-post-office-perm').value = document.getElementById('rpl-post-office').value;
+}
+
+function collectFormData(formId) {
+  const data = {};
+  const inputs = document.querySelectorAll(`#${formId} input, #${formId} select, #${formId} textarea`);
+  inputs.forEach(input => {
+    if(input.id) data[input.id] = input.value;
+  });
+  return data;
+}
+
+function saveFormData() {
+  formData.form1 = collectFormData('form1');
+  localStorage.setItem('trainee_form1', JSON.stringify(formData.form1));
+  alert('✅ Form 1 data saved!');
+}
+
+function saveRPLData() {
+  formData.form2 = collectFormData('form2');
+  localStorage.setItem('trainee_form2', JSON.stringify(formData.form2));
+  alert('✅ Form 2 data saved!');
+}
+
+function clearForm() {
+  if(confirm('Clear all Form 1 fields?')) {
+    document.querySelectorAll('#form1 input, #form1 select, #form1 textarea').forEach(el => el.value = '');
+    localStorage.removeItem('trainee_form1');
+  }
+}
+
+function clearRPLForm() {
+  if(confirm('Clear all Form 2 fields?')) {
+    document.querySelectorAll('#form2 input, #form2 select, #form2 textarea').forEach(el => el.value = '');
+    localStorage.removeItem('trainee_form2');
+  }
+}
+
+function renderPreview() {
+  const f1 = formData.form1 || JSON.parse(localStorage.getItem('trainee_form1') || '{}');
+  const f2 = formData.form2 || JSON.parse(localStorage.getItem('trainee_form2') || '{}');
+  
+  let html = '<h2 style="text-align:center; border-bottom:2px solid #333; padding-bottom:10px;">TRAINEE REGISTRATION & RPL ASSESSMENT FORM</h2>';
+  html += '<h3 style="margin-top:20px;">Form 1: Trainee Registration</h3>';
+  html += `<p><b>Name (En):</b> ${f1['t-name-en'] || '—'} | <b>Name (Bn):</b> ${f1['t-name-bn'] || '—'}</p>`;
+  html += `<p><b>DOB:</b> ${f1['t-dob'] || '—'} | <b>Sex:</b> ${f1['t-sex'] || '—'} | <b>PWD:</b> ${f1['t-pwd'] || '—'}</p>`;
+  html += `<p><b>Contact:</b> ${f1['t-contact'] || '—'} | <b>Email:</b> ${f1['t-email'] || '—'}</p>`;
+  html += `<p><b>Permanent:</b> ${f1['perm-address'] || '—'}, ${f1['perm-district'] || ''}, ${f1['perm-division'] || ''}</p>`;
+  html += `<p><b>Father:</b> ${f1['hh-father-en'] || '—'} | <b>Mother:</b> ${f1['hh-mother-en'] || '—'}</p>`;
+  html += `<p><b>Monthly Income:</b> ${f1['hh-income-monthly'] ? '৳'+f1['hh-income-monthly'] : '—'}</p>`;
+  html += `<p><b>Training:</b> ${f1['sk-prev-training'] || '—'} | <b>Employment:</b> ${f1['sk-employment'] || '—'}</p>`;
+  
+  html += '<h3 style="margin-top:30px;">Form 2: RPL Assessment</h3>';
+  html += `<p><b>Re-assessment:</b> ${f2['rpl-reassess'] || '—'}</p>`;
+  html += `<p><b>Name:</b> ${f2['rpl-name-en'] || '—'} | <b>Mobile:</b> ${f2['rpl-mobile'] || '—'}</p>`;
+  html += `<p><b>Gender:</b> ${f2['rpl-gender'] || '—'} | <b>PWD:</b> ${f2['rpl-pwd'] || '—'}</p>`;
+  html += `<p><b>Degree:</b> ${f2['rpl-degree'] || '—'} | <b>Year:</b> ${f2['rpl-year'] || '—'}</p>`;
+  html += `<p><b>Experience:</b> ${f2['rpl-exp'] ? f2['rpl-exp']+' years' : '—'}</p>`;
+  
+  document.getElementById('preview-content').innerHTML = html;
+  
+  // Also update print view
+  document.getElementById('form-print-view').innerHTML = html;
+}
+
+function exportPDF() {
+  renderPreview();
+  window.print();
+}
+
+function exportWord() {
+  renderPreview();
+  const html = document.getElementById('form-print-view').innerHTML;
+  const docHtml = `<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8"><title>Trainee Form</title>
+<style>
+@page { size: A4; margin: 1in; }
+body { font-family: 'Times New Roman', serif; font-size: 12pt; }
+h2 { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; }
+h3 { margin-top: 20px; }
+p { margin: 5px 0; }
+</style>
+</head>
+<body>${html}</body></html>`;
+  const blob = new Blob(['\ufeff', docHtml], {type: 'application/msword'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `Trainee_Form_${new Date().toISOString().slice(0,10)}.doc`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function exportExcel() {
+  renderPreview();
+  const f1 = formData.form1 || JSON.parse(localStorage.getItem('trainee_form1') || '{}');
+  const f2 = formData.form2 || JSON.parse(localStorage.getItem('trainee_form2') || '{}');
+  
+  const rows = [
+    ['Field', 'Value'],
+    ['--- Form 1: Trainee Registration ---', ''],
+    ['Name (English)', f1['t-name-en']],
+    ['Name (Bangla)', f1['t-name-bn']],
+    ['Date of Birth', f1['t-dob']],
+    ['Sex', f1['t-sex']],
+    ['PWD', f1['t-pwd']],
+    ['Contact', f1['t-contact']],
+    ['Email', f1['t-email']],
+    ['Permanent Address', f1['perm-address']],
+    ['District', f1['perm-district']],
+    ['Division', f1['perm-division']],
+    ['Father Name', f1['hh-father-en']],
+    ['Mother Name', f1['hh-mother-en']],
+    ['Monthly Income', f1['hh-income-monthly']],
+    ['Previous Training', f1['sk-prev-training']],
+    ['Employment Status', f1['sk-employment']],
+    ['--- Form 2: RPL Assessment ---', ''],
+    ['Re-assessment', f2['rpl-reassess']],
+    ['Name (English)', f2['rpl-name-en']],
+    ['Mobile', f2['rpl-mobile']],
+    ['Gender', f2['rpl-gender']],
+    ['Degree', f2['rpl-degree']],
+    ['Year of Passing', f2['rpl-year']],
+    ['Experience (years)', f2['rpl-exp']],
+    ['Institute', f2['rpl-institute']],
+  ];
+  
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{wch:30}, {wch:40}];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Trainee Forms');
+  XLSX.writeFile(wb, `Trainee_Form_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+// Auto-load saved data
+window.onload = function() {
+  const saved1 = localStorage.getItem('trainee_form1');
+  const saved2 = localStorage.getItem('trainee_form2');
+  if(saved1) { formData.form1 = JSON.parse(saved1); Object.entries(formData.form1).forEach(([k,v]) => { const el = document.getElementById(k); if(el) el.value = v; }); }
+  if(saved2) { formData.form2 = JSON.parse(saved2); Object.entries(formData.form2).forEach(([k,v]) => { const el = document.getElementById(k); if(el) el.value = v; }); }
+};
+</script>
+
+<footer style="text-align:center; padding:20px; font-size:12px; color:#6B6355;">
+  Trainee Registration & RPL Assessment Portal
+</footer>
+</body>
+</html>
