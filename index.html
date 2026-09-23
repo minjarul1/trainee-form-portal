@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 :root {
   --navy: #0f172a;
@@ -1583,10 +1584,36 @@ ${fileDataStore['signature'] ? `
   URL.revokeObjectURL(a.href);
 }
 
-// Export PDF - matches Word format
-function exportPDF() {
-  // Trigger browser print with optimized print CSS
-  window.print();
+// Export PDF - generate PDF file with html2pdf
+async function exportPDF() {
+  // Show loading state
+  const btn = document.querySelector('.btn-secondary');
+  if(btn) {
+    btn.textContent = 'Generating PDF...';
+    btn.disabled = true;
+  }
+  
+  try {
+    const element = document.getElementById('preview-section');
+    
+    const opt = {
+      margin:       0.5,
+      filename:     `Trainee_Form_${new Date().toISOString().slice(0,10)}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, logging: false },
+      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    
+    await html2pdf().set(opt).from(element).save();
+  } catch(err) {
+    console.error('PDF generation failed:', err);
+    alert('❌ PDF generation failed. Please try again.');
+  } finally {
+    if(btn) {
+      btn.textContent = 'Export PDF';
+      btn.disabled = false;
+    }
+  }
 }
 
 // Export Excel
