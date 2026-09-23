@@ -567,9 +567,6 @@ textarea {
     <button class="tab-btn" onclick="showTab('documents')">
       <span class="tab-icon">📎</span> Documents
     </button>
-    <button class="tab-btn" onclick="showTab('rpl')">
-      <span class="tab-icon">📋</span> RPL Assessment
-    </button>
     <button class="tab-btn" onclick="showTab('preview')">
       <span class="tab-icon">👁</span> Preview
     </button>
@@ -1029,58 +1026,7 @@ textarea {
 
     <div class="btn-group">
       <button class="btn btn-outline" onclick="showTab('employment')">← Previous</button>
-      <button class="btn btn-primary" onclick="showTab('rpl')">Next: RPL Assessment →</button>
-      <button class="btn btn-outline" onclick="saveData()">💾 Save Draft</button>
-    </div>
-  </section>
-
-  <!-- RPL ASSESSMENT -->
-  <section id="rpl" class="form-section">
-    <div class="section-header">
-      <div class="section-icon">📋</div>
-      <div class="section-title">
-        <h2>RPL Assessment Details</h2>
-        <p>Recognition of Prior Learning assessment information</p>
-      </div>
-    </div>
-    
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Applying for Re-assessment?</label>
-        <select id="reassess-applying">
-          <option>No</option>
-          <option>Yes</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Re-assessment Reason</label>
-        <input type="text" id="reassess-reason" placeholder="If yes, provide reason">
-      </div>
-      <div class="form-group">
-        <label>Relevant Work Experience (Years)</label>
-        <input type="number" id="rpl-experience" placeholder="Years of experience">
-      </div>
-      <div class="form-group">
-        <label>Previous Certification (if any)</label>
-        <input type="text" id="prev-certification" placeholder="Certification name and issuing body">
-      </div>
-      <div class="form-group">
-        <label>Assessment Center</label>
-        <input type="text" id="assessment-center" placeholder="Center name/location">
-      </div>
-      <div class="form-group">
-        <label>Assessment Date</label>
-        <input type="date" id="assessment-date">
-      </div>
-      <div class="form-group full-width">
-        <label>Remarks</label>
-        <textarea id="rpl-remarks" placeholder="Any additional notes..."></textarea>
-      </div>
-    </div>
-
-    <div class="btn-group">
-      <button class="btn btn-outline" onclick="showTab('documents')">← Previous</button>
-      <button class="btn btn-success" onclick="showTab('preview')">👁 Complete & Preview</button>
+      <button class="btn btn-primary" onclick="showTab('preview')">👁 Preview & Export</button>
       <button class="btn btn-outline" onclick="saveData()">💾 Save Draft</button>
     </div>
   </section>
@@ -1129,22 +1075,25 @@ textarea {
 </div>
 
 <script>
-let currentTab = 'personal';
-let formData = {};
+  let formData = {};
 
 // Tab Navigation
 function showTab(tabId) {
   document.querySelectorAll('.form-section').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
   
-  document.getElementById(tabId).classList.add('active');
-  event?.target?.closest('.tab-btn')?.classList.add('active') ||
-    document.querySelector(`.tab-btn[onclick*="${tabId}"]`)?.classList.add('active');
+  const targetSection = document.getElementById(tabId === 'preview' ? 'preview-section' : tabId);
+  if(targetSection) targetSection.classList.add('active');
+  
+  const activeBtn = document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+  if(activeBtn) activeBtn.classList.add('active');
   
   currentTab = tabId;
   window.scrollTo({ top: 0, behavior: 'smooth' });
   
-  if(tabId === 'preview') renderPreview();
+  if(tabId === 'preview') {
+    setTimeout(renderPreview, 100);
+  }
 }
 
 // Copy Address
@@ -1227,7 +1176,7 @@ function renderPreview() {
   
   let html = `
     <div class="preview-header">
-      <h1>TRAINEE REGISTRATION & RPL ASSESSMENT FORM</h1>
+      <h1>TRAINEE REGISTRATION FORM</h1>
       <p>ISISC-ASSET Project | Enterprise-Based Training (EBT)</p>
       <p style="margin-top: 8px; font-size: 12px;">Generated: ${new Date().toLocaleDateString('en-GB')}</p>
     </div>
@@ -1249,26 +1198,21 @@ function renderPreview() {
     </div>
     
     <div class="preview-section">
-      <div class="preview-section-title">🏠 Permanent Address</div>
-      <div class="preview-field"><div class="preview-label">Address:</div><div class="preview-value">${getValue('perm-address')}</div></div>
+      <div class="preview-section-title">🏠 Address</div>
+      <div class="preview-field"><div class="preview-label">Permanent Address:</div><div class="preview-value">${getValue('perm-address')}</div></div>
       <div class="preview-field"><div class="preview-label">Division:</div><div class="preview-value">${getValue('perm-division')}</div></div>
       <div class="preview-field"><div class="preview-label">District:</div><div class="preview-value">${getValue('perm-district')}</div></div>
       <div class="preview-field"><div class="preview-label">Upazila:</div><div class="preview-value">${getValue('perm-upazila')}</div></div>
-      <div class="preview-field"><div class="preview-label">Post Office:</div><div class="preview-value">${getValue('perm-post-office')}</div></div>
       <div class="preview-field"><div class="preview-label">Area Type:</div><div class="preview-value">${getValue('perm-area-type')}</div></div>
-      <div class="preview-field"><div class="preview-label">Post Code:</div><div class="preview-value">${getValue('perm-post-code')}</div></div>
     </div>
     
     <div class="preview-section">
       <div class="preview-section-title">👨‍👩‍👧 Family Profile</div>
       <div class="preview-field"><div class="preview-label">Father's Name:</div><div class="preview-value ${isNotEmpty('father-name-en')?'highlight':''}">${getValue('father-name-en')}</div></div>
-      <div class="preview-field"><div class="preview-label">Father's Name (Bn):</div><div class="preview-value">${getValue('father-name-bn')}</div></div>
       <div class="preview-field"><div class="preview-label">Mother's Name:</div><div class="preview-value ${isNotEmpty('mother-name-en')?'highlight':''}">${getValue('mother-name-en')}</div></div>
-      <div class="preview-field"><div class="preview-label">Mother's Name (Bn):</div><div class="preview-value">${getValue('mother-name-bn')}</div></div>
       <div class="preview-field"><div class="preview-label">Emergency Contact:</div><div class="preview-value">${getValue('emergency-contact')}</div></div>
       <div class="preview-field"><div class="preview-label">Household Members:</div><div class="preview-value">${getValue('household-members')}</div></div>
       <div class="preview-field"><div class="preview-label">Monthly Income:</div><div class="preview-value ${isNotEmpty('monthly-income')?'highlight':''}">৳${getValue('monthly-income')}</div></div>
-      <div class="preview-field"><div class="preview-label">Daily Income/Person:</div><div class="preview-value">৳${getValue('daily-income')}</div></div>
       <div class="preview-field"><div class="preview-label">Bank Account:</div><div class="preview-value">${getValue('has-bank-account')}</div></div>
     </div>
     
@@ -1287,16 +1231,6 @@ function renderPreview() {
       <div class="preview-field"><div class="preview-label">Previous Training:</div><div class="preview-value">${getValue('prev-training')}</div></div>
       <div class="preview-field"><div class="preview-label">Monthly Income:</div><div class="preview-value ${isNotEmpty('monthly-income-personal')?'highlight':''}">৳${getValue('monthly-income-personal')}</div></div>
       <div class="preview-field"><div class="preview-label">Training Source:</div><div class="preview-value">${getValue('training-source')}</div></div>
-    </div>
-    
-    <div class="preview-section">
-      <div class="preview-section-title">📋 RPL Assessment</div>
-      <div class="preview-field"><div class="preview-label">Re-assessment Applied:</div><div class="preview-value">${getValue('reassess-applying')}</div></div>
-      <div class="preview-field"><div class="preview-label">Work Experience:</div><div class="preview-value">${getValue('rpl-experience')} years</div></div>
-      <div class="preview-field"><div class="preview-label">Previous Certification:</div><div class="preview-value">${getValue('prev-certification')}</div></div>
-      <div class="preview-field"><div class="preview-label">Assessment Center:</div><div class="preview-value">${getValue('assessment-center')}</div></div>
-      <div class="preview-field"><div class="preview-label">Assessment Date:</div><div class="preview-value">${getValue('assessment-date')}</div></div>
-      <div class="preview-field"><div class="preview-label">Remarks:</div><div class="preview-value">${getValue('rpl-remarks')}</div></div>
     </div>
   `;
   
@@ -1374,10 +1308,7 @@ function exportExcel() {
     ['Employment Status', formData['employment-status'] || '—'],
     ['Previous Training', formData['prev-training'] || 'No'],
     ['Monthly Income', formData['monthly-income-personal'] || '—'],
-    ['=== RPL ===', ''],
-    ['Re-assessment', formData['reassess-applying'] || 'No'],
-    ['Experience (Years)', formData['rpl-experience'] || '—'],
-    ['Assessment Center', formData['assessment-center'] || '—'],
+    ['Training Source', formData['training-source'] || '—'],
   ];
   
   const ws = XLSX.utils.aoa_to_sheet(rows);
