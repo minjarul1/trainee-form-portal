@@ -1272,7 +1272,7 @@ function updateProgress() {
   document.getElementById('progress-count').textContent = `${filled}/${total}`;
 }
 
-// Export Word - 2 page minimal design
+// Export Word - 2 page compact monospace design
 function exportWord() {
   const getValue = (id) => formData[id] || '—';
   const isNotEmpty = (id) => !!formData[id];
@@ -1285,120 +1285,105 @@ function exportWord() {
 <style>
 @page { 
   size: A4; 
-  margin: 0.75in 0.75in 0.75in 0.75in;
+  margin: 0.5in 0.5in 0.5in 0.5in;
 }
 body { 
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif; 
-  font-size: 10pt; 
-  color: #1a1a1a;
-  line-height: 1.5;
+  font-family: 'Courier New', Courier, monospace; 
+  font-size: 8pt; 
+  color: #000;
+  line-height: 1.3;
 }
 h1 { 
   text-align: center; 
-  font-size: 22pt; 
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0 0 5px 0;
-  letter-spacing: -0.5px;
+  font-size: 14pt; 
+  font-weight: bold;
+  margin: 0 0 3px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 .subtitle {
   text-align: center;
-  font-size: 9pt;
-  color: #64748b;
-  margin: 0 0 25px 0;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #e2e8f0;
+  font-size: 7pt;
+  color: #666;
+  margin: 0 0 8px 0;
 }
 .page-break { page-break-after: always; }
 h2 { 
-  font-size: 12pt; 
-  font-weight: 600;
-  color: #0f172a;
-  margin: 20px 0 10px 0;
-  padding: 8px 12px;
-  background: #f8fafc;
-  border-left: 4px solid #3b82f6;
+  font-size: 9pt; 
+  font-weight: bold;
+  margin: 8px 0 4px 0;
+  padding: 3px 6px;
+  background: #f0f0f0;
+  border-left: 3px solid #333;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 table { 
   width: 100%; 
   border-collapse: collapse; 
-  margin-bottom: 15px;
-  font-size: 9.5pt;
+  margin-bottom: 8px;
+  font-size: 7.5pt;
 }
 th { 
-  background: #f1f5f9;
-  padding: 10px 12px; 
+  background: #e8e8e8;
+  padding: 4px 6px; 
   text-align: left; 
-  font-weight: 600; 
-  color: #475569;
-  border: 1px solid #e2e8f0;
-  font-size: 9pt;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
+  font-weight: bold; 
+  border: 1px solid #999;
+  font-size: 7pt;
 }
 td { 
-  padding: 10px 12px; 
-  border: 1px solid #e2e8f0; 
+  padding: 3px 6px; 
+  border: 1px solid #999; 
   vertical-align: middle;
 }
 td.label { 
-  width: 30%; 
+  width: 28%; 
   background: #fafafa;
-  font-weight: 500;
-  color: #64748b;
-  font-size: 9pt;
+  font-weight: bold;
 }
 td.value { 
-  width: 70%;
-  color: #1a1a1a;
+  width: 72%;
 }
-tr:nth-child(even) td.value { background: #fefefe; }
 .signature-section { 
-  margin-top: 30px;
-  page-break-inside: avoid;
+  margin-top: 15px;
 }
 .sig-box {
   display: flex;
-  gap: 30px;
-  margin-top: 20px;
+  gap: 20px;
+  margin-top: 10px;
 }
 .sig-item {
   flex: 1;
   text-align: center;
-  padding: 15px;
-  border: 1px dashed #cbd5e1;
+  padding: 8px;
+  border: 1px solid #999;
 }
 .sig-line {
-  border-bottom: 1px solid #333;
-  margin: 30px 20px 8px 20px;
+  border-bottom: 1px solid #000;
+  margin: 20px 15px 5px 15px;
 }
-.status-uploaded { color: #10b981; font-weight: 600; }
-.status-not-uploaded { color: #ef4444; }
+.status-uploaded { color: #008000; font-weight: bold; }
+.status-not-uploaded { color: #cc0000; }
 </style>
 </head>
 <body>
 
-<h1>TRAINEE REGISTRATION FORM</h1>
-<div class="subtitle">
-  ISISC-ASSET Project | Enterprise-Based Training (EBT)<br>
-  <span style="font-size:8pt;">Generated: ${new Date().toLocaleDateString('en-GB')}</span>
-</div>
+<h1>Trainee Registration Form</h1>
+<div class="subtitle">ISISC-ASSET Project | EBT | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
 
 <!-- PAGE 1 -->
 <h2>Personal Information</h2>
 <table>
 <tr><th>Field</th><th>Details</th></tr>
-<tr><td class="label">Full Name (English)</td><td class="value">${getValue('full-name-en')}</td></tr>
-<tr><td class="label">Full Name (Bangla)</td><td class="value">${getValue('full-name-bn')}</td></tr>
+<tr><td class="label">Name (English)</td><td class="value">${getValue('full-name-en')}</td></tr>
+<tr><td class="label">Name (Bangla)</td><td class="value">${getValue('full-name-bn')}</td></tr>
 <tr><td class="label">Date of Birth</td><td class="value">${getValue('dob')}</td></tr>
 <tr><td class="label">Gender</td><td class="value">${getValue('gender')}</td></tr>
 <tr><td class="label">Nationality</td><td class="value">${getValue('nationality')}</td></tr>
 <tr><td class="label">Religion</td><td class="value">${getValue('religion')}</td></tr>
 <tr><td class="label">ID Type</td><td class="value">${getValue('id-type')}</td></tr>
-<tr><td class="label">ID/Passport Number</td><td class="value">${getValue('id-number')}</td></tr>
-<tr><td class="label">Contact Number</td><td class="value">${getValue('contact')}</td></tr>
+<tr><td class="label">ID Number</td><td class="value">${getValue('id-number')}</td></tr>
+<tr><td class="label">Contact</td><td class="value">${getValue('contact')}</td></tr>
 <tr><td class="label">Email</td><td class="value">${getValue('email')}</td></tr>
 <tr><td class="label">PWD</td><td class="value">${getValue('pwd')}</td></tr>
 <tr><td class="label">Marital Status</td><td class="value">${getValue('marital-status')}</td></tr>
@@ -1421,14 +1406,14 @@ tr:nth-child(even) td.value { background: #fefefe; }
 <h2>Family Profile</h2>
 <table>
 <tr><th>Field</th><th>Details</th></tr>
-<tr><td class="label">Father's Name (English)</td><td class="value">${getValue('father-name-en')}</td></tr>
-<tr><td class="label">Father's Name (Bangla)</td><td class="value">${getValue('father-name-bn')}</td></tr>
-<tr><td class="label">Mother's Name (English)</td><td class="value">${getValue('mother-name-en')}</td></tr>
-<tr><td class="label">Mother's Name (Bangla)</td><td class="value">${getValue('mother-name-bn')}</td></tr>
+<tr><td class="label">Father (English)</td><td class="value">${getValue('father-name-en')}</td></tr>
+<tr><td class="label">Father (Bangla)</td><td class="value">${getValue('father-name-bn')}</td></tr>
+<tr><td class="label">Mother (English)</td><td class="value">${getValue('mother-name-en')}</td></tr>
+<tr><td class="label">Mother (Bangla)</td><td class="value">${getValue('mother-name-bn')}</td></tr>
 <tr><td class="label">Emergency Contact</td><td class="value">${getValue('emergency-contact')}</td></tr>
 <tr><td class="label">Household Members</td><td class="value">${getValue('household-members')}</td></tr>
-<tr><td class="label">Monthly Income (BDT)</td><td class="value">${getValue('monthly-income')}</td></tr>
-<tr><td class="label">Daily Income/Person</td><td class="value">${getValue('daily-income')}</td></tr>
+<tr><td class="label">Monthly Income</td><td class="value">${getValue('monthly-income')}</td></tr>
+<tr><td class="label">Daily Income</td><td class="value">${getValue('daily-income')}</td></tr>
 <tr><td class="label">Bank Account</td><td class="value">${getValue('has-bank-account')}</td></tr>
 <tr><td class="label">Account Name</td><td class="value">${getValue('account-name')}</td></tr>
 <tr><td class="label">Account Number</td><td class="value">${getValue('account-number')}</td></tr>
@@ -1441,7 +1426,7 @@ tr:nth-child(even) td.value { background: #fefefe; }
 <tr><td class="label">Education Level</td><td class="value">${getValue('education-level')}</td></tr>
 <tr><td class="label">Degree/Diploma</td><td class="value">${getValue('degree-name')}</td></tr>
 <tr><td class="label">Institute</td><td class="value">${getValue('institute-name')}</td></tr>
-<tr><td class="label">Year of Passing</td><td class="value">${getValue('year-passing')}</td></tr>
+<tr><td class="label">Year Passing</td><td class="value">${getValue('year-passing')}</td></tr>
 <tr><td class="label">Grade/Division</td><td class="value">${getValue('grade')}</td></tr>
 <tr><td class="label">Division/Group</td><td class="value">${getValue('division-group')}</td></tr>
 </table>
@@ -1451,7 +1436,7 @@ tr:nth-child(even) td.value { background: #fefefe; }
 <tr><th>Field</th><th>Details</th></tr>
 <tr><td class="label">Employment Status</td><td class="value">${getValue('employment-status')}</td></tr>
 <tr><td class="label">Previous Training</td><td class="value">${getValue('prev-training')}</td></tr>
-<tr><td class="label">Monthly Income (BDT)</td><td class="value">${getValue('monthly-income-personal')}</td></tr>
+<tr><td class="label">Monthly Income</td><td class="value">${getValue('monthly-income-personal')}</td></tr>
 <tr><td class="label">Training Source</td><td class="value">${getValue('training-source')}</td></tr>
 <tr><td class="label">Work Experience</td><td class="value">${getValue('work-experience')}</td></tr>
 </table>
@@ -1459,26 +1444,26 @@ tr:nth-child(even) td.value { background: #fefefe; }
 <h2>Documents Status</h2>
 <table>
 <tr><th>Document</th><th>Status</th></tr>
-<tr><td class="label">Passport Photo</td><td class="value ${isNotEmpty('photo') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('photo') ? '✓ Uploaded' : '✗ Not uploaded'}</td></tr>
-<tr><td class="label">Signature</td><td class="value ${isNotEmpty('signature') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('signature') ? '✓ Uploaded' : '✗ Not uploaded'}</td></tr>
-<tr><td class="label">NID/ID Document</td><td class="value ${isNotEmpty('nid-doc') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('nid-doc') ? '✓ Uploaded' : '✗ Not uploaded'}</td></tr>
-<tr><td class="label">Educational Certificate</td><td class="value ${isNotEmpty('edu-cert') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('edu-cert') ? '✓ Uploaded' : '✗ Not uploaded'}</td></tr>
-<tr><td class="label">Work Experience Certificate</td><td class="value">${isNotEmpty('work-cert') ? '✓ Uploaded' : 'Not uploaded'}</td></tr>
-<tr><td class="label">Bank Account Copy</td><td class="value">${isNotEmpty('bank-doc') ? '✓ Uploaded' : 'Not uploaded'}</td></tr>
+<tr><td class="label">Passport Photo</td><td class="value ${isNotEmpty('photo') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('photo') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+<tr><td class="label">Signature</td><td class="value ${isNotEmpty('signature') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('signature') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+<tr><td class="label">NID/ID Document</td><td class="value ${isNotEmpty('nid-doc') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('nid-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+<tr><td class="label">Educational Cert</td><td class="value ${isNotEmpty('edu-cert') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('edu-cert') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+<tr><td class="label">Work Cert</td><td class="value">${isNotEmpty('work-cert') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+<tr><td class="label">Bank Copy</td><td class="value">${isNotEmpty('bank-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
 </table>
 
 <div class="signature-section">
 <h2>Signatures</h2>
 <div class="sig-box">
   <div class="sig-item">
-    <div style="font-weight:600; color:#475569; margin-bottom:5px;">Trainee Signature</div>
+    <div style="font-weight:bold; margin-bottom:3px;">TRAINEE SIGNATURE</div>
     <div class="sig-line"></div>
-    <div style="font-size:8pt; color:#94a3b8; margin-top:8px;">Date: _______________</div>
+    <div style="font-size:6pt; margin-top:3px;">Date: _______________</div>
   </div>
   <div class="sig-item">
-    <div style="font-weight:600; color:#475569; margin-bottom:5px;">Authorized Signatory</div>
+    <div style="font-weight:bold; margin-bottom:3px;">AUTHORIZED SIGNATORY</div>
     <div class="sig-line"></div>
-    <div style="font-size:8pt; color:#94a3b8; margin-top:8px;">Designation: ___________</div>
+    <div style="font-size:6pt; margin-top:3px;">Designation: ___________</div>
   </div>
 </div>
 </div>
