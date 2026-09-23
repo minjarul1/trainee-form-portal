@@ -601,6 +601,19 @@ textarea {
   
   /* Action cards hidden */
   .action-cards { display: none !important; }
+  
+  /* Image display for print */
+  .preview-section img {
+    max-width: 100px !important;
+    max-height: 120px !important;
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid !important;
+  }
+  
+  .preview-section img[src*="signature"] {
+    max-width: 150px !important;
+    max-height: 50px !important;
+  }
 }
 </style>
 </head>
@@ -1226,12 +1239,18 @@ function saveData() {
 // Load Data
 function loadData() {
   const saved = localStorage.getItem('trainee_form_data');
+  const fileSaved = localStorage.getItem('trainee_file_data');
+  
   if(saved) {
     formData = JSON.parse(saved);
     Object.entries(formData).forEach(([id, value]) => {
       const el = document.getElementById(id);
       if(el && value) el.value = value;
     });
+  }
+  
+  if(fileSaved) {
+    Object.assign(fileDataStore, JSON.parse(fileSaved));
   }
 }
 
@@ -1310,9 +1329,27 @@ function renderPreview() {
       <div class="preview-field"><div class="preview-label">Signature:</div><div class="preview-value">${isNotEmpty('signature') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
       <div class="preview-field"><div class="preview-label">NID/ID Document:</div><div class="preview-value">${isNotEmpty('nid-doc') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
       <div class="preview-field"><div class="preview-label">Educational Certificate:</div><div class="preview-value">${isNotEmpty('edu-cert') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
-      <div class="preview-field"><div class="preview-label">Work Experience Certificate:</div><div class="preview-value">${isNotEmpty('work-cert') ? '✅ Uploaded' : 'Not uploaded'}</div></div>
-      <div class="preview-field"><div class="preview-label">Bank Account Copy:</div><div class="preview-value">${isNotEmpty('bank-doc') ? '✅ Uploaded' : 'Not uploaded'}</div></div>
+      <div class="preview-field"><div class="preview-label">Work Experience Certificate:</div><div class="preview-value">${isNotEmpty('work-cert') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
+      <div class="preview-field"><div class="preview-label">Bank Account Copy:</div><div class="preview-value">${isNotEmpty('bank-doc') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
     </div>
+    
+    ${fileDataStore['photo'] ? `
+    <div class="preview-section" style="margin-top:12px;">
+      <div class="preview-section-title">📷 Passport Photo</div>
+      <div style="text-align:center; padding:10px; background:#f8f9fa; border-radius:8px;">
+        <img src="${fileDataStore['photo']}" style="max-width:150px; max-height:200px; border:1px solid #ddd; border-radius:4px;" />
+      </div>
+    </div>
+    ` : ''}
+    
+    ${fileDataStore['signature'] ? `
+    <div class="preview-section" style="margin-top:12px;">
+      <div class="preview-section-title">✍️ Signature</div>
+      <div style="text-align:center; padding:10px; background:#f8f9fa; border-radius:8px;">
+        <img src="${fileDataStore['signature']}" style="max-width:200px; max-height:80px; border:1px solid #ddd; border-radius:4px;" />
+      </div>
+    </div>
+    ` : ''}
   `;
 
   document.getElementById('preview-content').innerHTML = html;
@@ -1506,12 +1543,26 @@ td.value {
 <tr><td class="label">Bank Copy</td><td class="value">${isNotEmpty('bank-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
 </table>
 
+${fileDataStore['photo'] ? `
+<div style="margin-top:10px;">
+  <div style="font-weight:bold; margin-bottom:5px; font-size:8pt;">PASSPORT PHOTO</div>
+  <img src="${fileDataStore['photo']}" style="width:80px; height:100px; object-fit:cover; border:1px solid #999;" />
+</div>
+` : ''}
+
+${fileDataStore['signature'] ? `
+<div style="margin-top:10px;">
+  <div style="font-weight:bold; margin-bottom:5px; font-size:8pt;">SIGNATURE</div>
+  <img src="${fileDataStore['signature']}" style="width:120px; height:40px; object-fit:contain; border:1px solid #999;" />
+</div>
+` : ''}
+
 <div class="signature-section">
 <h2>Signatures</h2>
 <div class="sig-box">
   <div class="sig-item">
     <div style="font-weight:bold; margin-bottom:3px;">TRAINEE SIGNATURE</div>
-    <div class="sig-line"></div>
+    ${fileDataStore['signature'] ? `<img src="${fileDataStore['signature']}" style="width:100%; height:40px; object-fit:contain; margin:5px 0;" />` : '<div class="sig-line"></div>'}
     <div style="font-size:6pt; margin-top:3px;">Date: _______________</div>
   </div>
   <div class="sig-item">
@@ -1598,7 +1649,9 @@ function allowBanglaOnly(input) {
   });
 }
 
-// File upload handling - show selected filename
+// File upload handling - store as base64 data URL
+const fileDataStore = {};
+
 function initFileUploads() {
   const fileInputs = ['photo', 'signature', 'nid-doc', 'edu-cert', 'work-cert', 'bank-doc'];
   
@@ -1611,13 +1664,37 @@ function initFileUploads() {
       const uploadContainer = this.closest('.file-upload');
       
       if(this.files && this.files[0]) {
-        const fileName = this.files[0].name;
-        const fileSize = (this.files[0].size / 1024 / 1024).toFixed(2);
+        const file = this.files[0];
+        const reader = new FileReader();
         
-        if(uploadContainer) {
-          uploadContainer.classList.add('uploaded');
-          uploadContainer.querySelector('.file-upload-text').innerHTML = 
-            `✅ ${fileName}<br><small>${fileSize} MB</small>`;
+        reader.onload = function(event) {
+          // Store the data URL
+          fileDataStore[id] = event.target.result;
+          
+          // Also add to formData for persistence
+          formData[id] = event.target.result;
+          localStorage.setItem('trainee_form_data', JSON.stringify(formData));
+          localStorage.setItem('trainee_file_data', JSON.stringify(fileDataStore));
+          
+          const fileSize = (file.size / 1024 / 1024).toFixed(2);
+          
+          if(uploadContainer) {
+            uploadContainer.classList.add('uploaded');
+            uploadContainer.querySelector('.file-upload-text').innerHTML = 
+              `✅ ${file.name}<br><small>${fileSize} MB</small>`;
+          }
+          
+          // Update preview if visible
+          if(document.getElementById('preview-section').style.display !== 'none') {
+            renderPreview();
+          }
+        };
+        
+        // Read as data URL for display (only for image files)
+        if(file.type.startsWith('image/')) {
+          reader.readAsDataURL(file);
+        } else {
+          reader.readAsDataURL(file);
         }
       } else {
         if(uploadContainer) {
