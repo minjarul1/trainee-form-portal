@@ -1374,7 +1374,9 @@ function renderPreview() {
       <div class="preview-field"><div class="preview-label">Division:</div><div class="preview-value">${getValue('perm-division')}</div></div>
       <div class="preview-field"><div class="preview-label">District:</div><div class="preview-value">${getValue('perm-district')}</div></div>
       <div class="preview-field"><div class="preview-label">Upazila:</div><div class="preview-value">${getValue('perm-upazila')}</div></div>
+      <div class="preview-field"><div class="preview-label">Post Office:</div><div class="preview-value">${getValue('perm-post-office')}</div></div>
       <div class="preview-field"><div class="preview-label">Area Type:</div><div class="preview-value">${getValue('perm-area-type')}</div></div>
+      <div class="preview-field"><div class="preview-label">Post Code:</div><div class="preview-value">${getValue('perm-post-code')}</div></div>
     </div>
     
     <div class="preview-section">
@@ -1383,11 +1385,16 @@ function renderPreview() {
       <div class="preview-field"><div class="preview-label">Father's Name (Bangla):</div><div class="preview-value">${getValue('father-name-bn')}</div></div>
       <div class="preview-field"><div class="preview-label">Mother's Name (English):</div><div class="preview-value ${isNotEmpty('mother-name-en')?'highlight':''}">${getValue('mother-name-en')}</div></div>
       <div class="preview-field"><div class="preview-label">Mother's Name (Bangla):</div><div class="preview-value">${getValue('mother-name-bn')}</div></div>
+      <div class="preview-field"><div class="preview-label">Guardian's Name:</div><div class="preview-value">${getValue('guardian-name')}</div></div>
       <div class="preview-field"><div class="preview-label">Emergency Contact:</div><div class="preview-value">${getValue('emergency-contact')}</div></div>
       <div class="preview-field"><div class="preview-label">Household Members:</div><div class="preview-value">${getValue('household-members')}</div></div>
+      <div class="preview-field"><div class="preview-label">Income Source:</div><div class="preview-value">${getValue('income-source')}</div></div>
       <div class="preview-field"><div class="preview-label">Monthly Income:</div><div class="preview-value ${isNotEmpty('monthly-income')?'highlight':''}">৳${getValue('monthly-income')}</div></div>
       <div class="preview-field"><div class="preview-label">Daily Income/Person:</div><div class="preview-value">৳${getValue('daily-income')}</div></div>
       <div class="preview-field"><div class="preview-label">Bank Account:</div><div class="preview-value">${getValue('has-bank-account')}</div></div>
+      <div class="preview-field"><div class="preview-label">Account Name:</div><div class="preview-value">${getValue('account-name')}</div></div>
+      <div class="preview-field"><div class="preview-label">Account Number:</div><div class="preview-value">${getValue('account-number')}</div></div>
+      <div class="preview-field"><div class="preview-label">Bank Name:</div><div class="preview-value">${getValue('bank-name')}</div></div>
     </div>
     
     <div class="preview-section">
@@ -1397,6 +1404,7 @@ function renderPreview() {
       <div class="preview-field"><div class="preview-label">Institute:</div><div class="preview-value">${getValue('institute-name')}</div></div>
       <div class="preview-field"><div class="preview-label">Year of Passing:</div><div class="preview-value">${getValue('year-passing')}</div></div>
       <div class="preview-field"><div class="preview-label">Grade/Division:</div><div class="preview-value">${getValue('grade')}</div></div>
+      <div class="preview-field"><div class="preview-label">Division/Group:</div><div class="preview-value">${getValue('division-group')}</div></div>
     </div>
     
     <div class="preview-section">
