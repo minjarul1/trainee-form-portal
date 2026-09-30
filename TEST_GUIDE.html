@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainee Form - Test Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .success { color: green; padding: 20px; background: #d4edda; border-radius: 8px; }
+        .error { color: red; padding: 20px; background: #f8d7da; border-radius: 8px; }
+        .info { background: #d1ecf1; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Trainee Form Test Page</h1>
+    
+    <div class="info">
+        <h3>Test Instructions:</h3>
+        <ol>
+            <li>Open <code>index.html</code> in your browser</li>
+            <li>Fill out the form with test data</li>
+            <li>Click "Submit & Send Email"</li>
+            <li>Check browser console (F12) for logs</li>
+            <li>Check your splitforms dashboard: https://splitforms.com</li>
+        </ol>
+    </div>
+    
+    <div class="info">
+        <h3>🔧 Configuration:</h3>
+        <ul>
+            <li><strong>Access Key:</strong> <code>33b74c40648c42308bd9f449d629f031</code></li>
+            <li><strong>Endpoint:</strong> <code>https://splitforms.com/api/submit</code></li>
+            <li><strong>File:</strong> <code>splitforms.js</code></li>
+        </ul>
+    </div>
+    
+    <div class="info">
+        <h3>📋 Test Data (fill these fields):</h3>
+        <ul>
+            <li>Full Name (English): <strong>Test User</strong></li>
+            <li>Email: <strong>test@example.com</strong></li>
+            <li>Phone: <strong>+880 1711-104318</strong></li>
+            <li>Training Program: <strong>Python Development</strong></li>
+        </ul>
+    </div>
+    
+    <div class="info">
+        <h3>🔍 Troubleshooting:</h3>
+        <ul>
+            <li>If you see "undefined" errors: Check browser console (F12 → Console)</li>
+            <li>If splitforms fails: Check your access key is correct</li>
+            <li>If PDF doesn't generate: Check html2pdf.js is loaded</li>
+        </ul>
+    </div>
+    
+    <a href="index.html" style="display: inline-block; padding: 15px 30px; background: #007bff; color: white; text-decoration: none; border-radius: 8px; margin-top: 20px;">
+        🚀 Go to Trainee Form
+    </a>
+    
+    <script>
+        // Quick test of splitforms integration
+        async function testSplitforms() {
+            const testData = {
+                'full-name-en': 'Test User',
+                'full-name-bn': 'টেস্ট ইউজার',
+                'email': 'test@example.com',
+                'contact': '+880 1711-104318',
+                'training-program': 'Python Development',
+                'dob': '1990-01-01',
+                'gender': 'Male'
+            };
+            
+            try {
+                const result = await submitToSplitForms(testData);
+                console.log('Test result:', result);
+            } catch (error) {
+                console.error('Test failed:', error);
+            }
+        }
+    </script>
+</body>
+</html>
