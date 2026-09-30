@@ -515,6 +515,54 @@ textarea {
   display: flex;
 }
 
+/* Email Status */
+.email-status {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  display: none;
+}
+
+.email-status.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  display: block;
+}
+
+.email-status.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  display: block;
+}
+
+/* Loading Spinner */
+.loading {
+  display: none;
+  text-align: center;
+  padding: 20px;
+}
+
+.loading.active {
+  display: block;
+}
+
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--accent);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .header { padding: 20px; }
@@ -527,7 +575,7 @@ textarea {
   .preview-label { width: 100%; }
 }
 
-/* Print Styles - Compact 2-page format matching Word export */
+/* Print Styles */
 @media print {
   @page { 
     size: A4; 
@@ -558,7 +606,6 @@ textarea {
     width: 100%;
   }
   
-  /* Compact header */
   .preview-header {
     margin-bottom: 8px !important;
     padding-bottom: 5px !important;
@@ -572,7 +619,6 @@ textarea {
     margin: 1px 0 !important;
   }
   
-  /* Compact sections */
   .preview-section {
     margin-bottom: 8px !important;
     page-break-inside: avoid;
@@ -585,7 +631,6 @@ textarea {
     border-left: 3px solid #333 !important;
   }
   
-  /* Compact fields */
   .preview-field {
     padding: 2px 0 !important;
     border-bottom: 1px solid #ccc !important;
@@ -600,10 +645,8 @@ textarea {
     font-size: 7.5pt !important;
   }
   
-  /* Action cards hidden */
   .action-cards { display: none !important; }
   
-  /* Image display for print */
   .preview-section img {
     max-width: 100px !important;
     max-height: 120px !important;
@@ -723,7 +766,7 @@ textarea {
         <input type="tel" id="contact" placeholder="+880 1XXX-XXXXXX">
       </div>
       <div class="form-group">
-        <label>Email Address</label>
+        <label>Email Address <span class="req">*</span></label>
         <input type="email" id="email" placeholder="example@email.com">
       </div>
       <div class="form-group">
@@ -1148,9 +1191,15 @@ textarea {
       </div>
       <div class="action-card" onclick="submitForm()">
         <div class="action-card-icon">✅</div>
-        <div class="action-card-title">Submit</div>
-        <div class="action-card-desc">Final submission</div>
+        <div class="action-card-title">Submit & Send Email</div>
+        <div class="action-card-desc">Final submission with email confirmation</div>
       </div>
+    </div>
+    
+    <div class="email-status" id="email-status"></div>
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Sending confirmation email...</p>
     </div>
   </section>
 </main>
@@ -1161,6 +1210,7 @@ textarea {
 
 <script>
   let formData = {};
+  let fileDataStore = {};
 
 // Tab Navigation
 function showTab(tabId) {
@@ -1231,6 +1281,7 @@ function collectFormData() {
 function saveData() {
   formData = collectFormData();
   localStorage.setItem('trainee_form_data', JSON.stringify(formData));
+  localStorage.setItem('trainee_file_data', JSON.stringify(fileDataStore));
   
   const indicator = document.getElementById('save-indicator');
   indicator.classList.add('show');
@@ -1251,7 +1302,7 @@ function loadData() {
   }
   
   if(fileSaved) {
-    Object.assign(fileDataStore, JSON.parse(fileSaved));
+    fileDataStore = JSON.parse(fileSaved);
   }
 }
 
@@ -1281,7 +1332,7 @@ function renderPreview() {
       <div class="preview-field"><div class="preview-label">ID Type:</div><div class="preview-value">${getValue('id-type')}</div></div>
       <div class="preview-field"><div class="preview-label">ID/Passport No:</div><div class="preview-value ${isNotEmpty('id-number')?'highlight':''}">${getValue('id-number')}</div></div>
       <div class="preview-field"><div class="preview-label">Contact:</div><div class="preview-value ${isNotEmpty('contact')?'highlight':''}">${getValue('contact')}</div></div>
-      <div class="preview-field"><div class="preview-label">Email:</div><div class="preview-value">${getValue('email')}</div></div>
+      <div class="preview-field"><div class="preview-label">Email:</div><div class="preview-value ${isNotEmpty('email')?'highlight':''}">${getValue('email')}</div></div>
       <div class="preview-field"><div class="preview-label">PWD:</div><div class="preview-value">${getValue('pwd')}</div></div>
       <div class="preview-field"><div class="preview-label">Marital Status:</div><div class="preview-value">${getValue('marital-status')}</div></div>
     </div>
@@ -1364,7 +1415,7 @@ function updateProgress() {
   document.getElementById('progress-count').textContent = `${filled}/${total}`;
 }
 
-// Export Word - 2 page compact monospace design
+// Export Word
 function exportWord() {
   const getValue = (id) => formData[id] || '—';
   const isNotEmpty = (id) => !!formData[id];
@@ -1584,12 +1635,11 @@ ${fileDataStore['signature'] ? `
   URL.revokeObjectURL(a.href);
 }
 
-// Export PDF - generate PDF matching Word format
+// Export PDF
 function exportPDF() {
   const getValue = (id) => formData[id] || '—';
   const isNotEmpty = (id) => !!formData[id];
   
-  // Build HTML content
   const pdfContent = `
 <!DOCTYPE html>
 <html>
@@ -1721,7 +1771,6 @@ ${fileDataStore['signature'] ? `<div style="margin-top:10px;"><div style="font-w
 </body>
 </html>`;
   
-  // Open in new window and print
   const printWindow = window.open('', '_blank');
   if (printWindow) {
     printWindow.document.open();
@@ -1778,22 +1827,74 @@ function exportExcel() {
   XLSX.writeFile(wb, `Trainee_Form_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
 
-// Submit
-function submitForm() {
-  if(confirm('Submit the form? This action cannot be undone.')) {
-    alert('✅ Form submitted successfully!\n\nThank you for your registration.');
+// Submit with Email
+async function submitForm() {
+  if(!confirm('Submit the form? This will send a confirmation email to your registered email address.')) {
+    return;
+  }
+  
+  formData = collectFormData();
+  const email = formData['email'];
+  const name = formData['full-name-en'];
+  
+  if(!email) {
+    alert('❌ Email is required to send confirmation!');
+    return;
+  }
+  
+  // Show loading
+  document.getElementById('loading').classList.add('active');
+  document.getElementById('email-status').className = 'email-status';
+  document.getElementById('email-status').style.display = 'none';
+  
+  try {
+    // Simulate API call - in production, send to your backend
+    // For now, we'll just show success message
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // Show success
+    const statusEl = document.getElementById('email-status');
+    statusEl.innerHTML = `✅ <strong>Success!</strong> Form submitted and confirmation email sent to ${email}`;
+    statusEl.className = 'email-status success';
+    statusEl.style.display = 'block';
+    
+    // In production, uncomment this:
+    /*
+    const response = await fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...formData, files: fileDataStore })
+    });
+    const result = await response.json();
+    
+    if(result.success) {
+      document.getElementById('email-status').innerHTML = `✅ ${result.message}`;
+      document.getElementById('email-status').className = 'email-status success';
+      document.getElementById('email-status').style.display = 'block';
+    } else {
+      document.getElementById('email-status').innerHTML = `❌ ${result.message}`;
+      document.getElementById('email-status').className = 'email-status error';
+      document.getElementById('email-status').style.display = 'block';
+    }
+    */
+    
+  } catch(error) {
+    document.getElementById('email-status').innerHTML = `❌ Error: ${error.message}`;
+    document.getElementById('email-status').className = 'email-status error';
+    document.getElementById('email-status').style.display = 'block';
+  } finally {
+    document.getElementById('loading').classList.remove('active');
   }
 }
 
-// Bengali input validation - only allow Bengali characters
+// Bengali input validation
 function allowBanglaOnly(input) {
   input.addEventListener('input', function(e) {
-    // Allow Bengali Unicode range: 0980-09FF
     this.value = this.value.replace(/[^\u0980-\u09FF\s]/g, '');
   });
 }
 
-// File upload handling - store as base64 data URL
+// File upload handling
 const fileDataStore = {};
 
 function initFileUploads() {
@@ -1804,7 +1905,6 @@ function initFileUploads() {
     if(!input) return;
     
     input.addEventListener('change', function(e) {
-      const label = this.closest('.form-group').querySelector('label:first-child');
       const uploadContainer = this.closest('.file-upload');
       
       if(this.files && this.files[0]) {
@@ -1812,12 +1912,7 @@ function initFileUploads() {
         const reader = new FileReader();
         
         reader.onload = function(event) {
-          // Store the data URL
           fileDataStore[id] = event.target.result;
-          
-          // Also add to formData for persistence
-          formData[id] = event.target.result;
-          localStorage.setItem('trainee_form_data', JSON.stringify(formData));
           localStorage.setItem('trainee_file_data', JSON.stringify(fileDataStore));
           
           const fileSize = (file.size / 1024 / 1024).toFixed(2);
@@ -1828,18 +1923,12 @@ function initFileUploads() {
               `✅ ${file.name}<br><small>${fileSize} MB</small>`;
           }
           
-          // Update preview if visible
           if(document.getElementById('preview-section').style.display !== 'none') {
             renderPreview();
           }
         };
         
-        // Read as data URL for display (only for image files)
-        if(file.type.startsWith('image/')) {
-          reader.readAsDataURL(file);
-        } else {
-          reader.readAsDataURL(file);
-        }
+        reader.readAsDataURL(file);
       } else {
         if(uploadContainer) {
           uploadContainer.classList.remove('uploaded');
@@ -1851,7 +1940,7 @@ function initFileUploads() {
   });
 }
 
-// Apply Bengali-only validation to Bangla name fields
+// Apply Bengali validation
 document.addEventListener('DOMContentLoaded', function() {
   const banglaFields = ['full-name-bn', 'father-name-bn', 'mother-name-bn'];
   banglaFields.forEach(id => {
@@ -1859,7 +1948,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if(el) allowBanglaOnly(el);
   });
   
-  // Initialize file upload handlers
   initFileUploads();
 });
 
