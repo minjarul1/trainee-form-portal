@@ -1304,6 +1304,9 @@ function saveData() {
   const indicator = document.getElementById('save-indicator');
   indicator.classList.add('show');
   setTimeout(() => indicator.classList.remove('show'), 2000);
+  
+  // Navigate to next section
+  showTab('address');
 }
 
 // Load Data
