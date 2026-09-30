@@ -1827,66 +1827,6 @@ function exportExcel() {
   XLSX.writeFile(wb, `Trainee_Form_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
 
-// Submit with Email
-async function submitForm() {
-  if(!confirm('Submit the form? This will send a confirmation email to your registered email address.')) {
-    return;
-  }
-  
-  formData = collectFormData();
-  const email = formData['email'];
-  const name = formData['full-name-en'];
-  
-  if(!email) {
-    alert('❌ Email is required to send confirmation!');
-    return;
-  }
-  
-  // Show loading
-  document.getElementById('loading').classList.add('active');
-  document.getElementById('email-status').className = 'email-status';
-  document.getElementById('email-status').style.display = 'none';
-  
-  try {
-    // Simulate API call - in production, send to your backend
-    // For now, we'll just show success message
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Show success
-    const statusEl = document.getElementById('email-status');
-    statusEl.innerHTML = `✅ <strong>Success!</strong> Form submitted and confirmation email sent to ${email}`;
-    statusEl.className = 'email-status success';
-    statusEl.style.display = 'block';
-    
-    // In production, uncomment this:
-    /*
-    const response = await fetch('/api/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...formData, files: fileDataStore })
-    });
-    const result = await response.json();
-    
-    if(result.success) {
-      document.getElementById('email-status').innerHTML = `✅ ${result.message}`;
-      document.getElementById('email-status').className = 'email-status success';
-      document.getElementById('email-status').style.display = 'block';
-    } else {
-      document.getElementById('email-status').innerHTML = `❌ ${result.message}`;
-      document.getElementById('email-status').className = 'email-status error';
-      document.getElementById('email-status').style.display = 'block';
-    }
-    */
-    
-  } catch(error) {
-    document.getElementById('email-status').innerHTML = `❌ Error: ${error.message}`;
-    document.getElementById('email-status').className = 'email-status error';
-    document.getElementById('email-status').style.display = 'block';
-  } finally {
-    document.getElementById('loading').classList.remove('active');
-  }
-}
-
 // Bengali input validation
 function allowBanglaOnly(input) {
   input.addEventListener('input', function(e) {
