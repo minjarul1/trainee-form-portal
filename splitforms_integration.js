@@ -1,100 +1,124 @@
 /**
- * splitforms Integration for Trainee Form
+ * splitforms Integration for Trainee Form Portal
  * 
- * Features:
- * - 500-1,000 free submissions/month
- * - No email credentials needed
- * - Submission dashboard
- * - AI spam protection
- * - Webhook support
- * 
- * Setup:
- * 1. Sign up at https://splitforms.com
- * 2. Get your Access Key
- * 3. Replace 'YOUR_ACCESS_KEY_HERE' below
+ * splitforms features:
+ * ✅ 500-1,000 free submissions/month (vs EmailJS: 200)
+ * ✅ No email credentials needed (vs EmailJS: requires Gmail App Password)
+ * ✅ Submission dashboard with search & export
+ * ✅ AI spam protection built-in
+ * ✅ Webhook support
+ * ✅ $5/mo for 5,000 subs (vs EmailJS: $11/mo for 1,000)
  */
 
+// ===== splitforms CONFIGURATION =====
 const SPLITFORMS_CONFIG = {
-    accessKey: 'YOUR_ACCESS_KEY_HERE',  // ← REPLACE WITH YOUR KEY
+    accessKey: 'YOUR_ACCESS_KEY_HERE',  // ← REPLACE WITH YOUR KEY from splitforms.com
     endpoint: 'https://splitforms.com/api/submit'
 };
 
+// ===== EMAILJS CONFIGURATION (Fallback) =====
+const EMAILJS_CONFIG = {
+    publicKey: 'YOUR_PUBLIC_KEY_HERE',  // ← Optional fallback
+    serviceId: 'service_trainee_form',
+    templateId: 'template_confirmation'
+};
+
 /**
- * Submit form data to splitforms
- * @param {Object} formData - Form data collected from trainee form
- * @returns {Promise<Object>} - Result with success status
+ * Submit form to splitforms
+ * @param {Object} formData - Collected form data
+ * @returns {Promise<Object>} - Submission result
  */
 async function submitToSplitForms(formData) {
-    console.log('Submitting to splitforms...');
+    console.log('📤 Submitting to splitforms...');
     
     try {
-        // Prepare form data for splitforms
-        // Map your form fields to splitforms format
         const payload = {
-            // Required: Access key
+            // Required fields for spam protection
             access_key: SPLITFORMS_CONFIG.accessKey,
-            
-            // Time-trap for spam protection (required)
             form_loaded_at: Date.now(),
-            
-            // Bot check (required)
             botcheck: false,
             
-            // Subject line for email notification
+            // Email subject
             subject: `New Trainee Registration: ${formData['full-name-en'] || formData['full-name-bn']}`,
             
-            // Trainee personal information
+            // Personal Information
             'Full Name (English)': formData['full-name-en'] || '—',
             'Full Name (Bangla)': formData['full-name-bn'] || '—',
             'Date of Birth': formData['dob'] || '—',
             'Gender': formData['gender'] || '—',
-            'Nationality': formData['nationality'] || '—',
+            'Nationality': formData['nationality'] || 'Bangladeshi',
             'Religion': formData['religion'] || '—',
             'ID Type': formData['id-type'] || '—',
             'ID Number': formData['id-number'] || '—',
+            'PWD Status': formData['pwd'] || 'No',
+            'Marital Status': formData['marital-status'] || '—',
             
-            // Contact information
+            // Contact Information
             'Email': formData['email'] || '—',
             'Phone': formData['contact'] || '—',
             'WeChat/QQ': formData['wechat-qq'] || '—',
             
-            // Address information
+            // Permanent Address
             'Permanent District': formData['perm-district'] || '—',
             'Permanent Division': formData['perm-division'] || '—',
             'Permanent Upazila': formData['perm-upazila'] || '—',
+            'Permanent Post Office': formData['perm-post-office'] || '—',
+            'Permanent Post Code': formData['perm-post-code'] || '—',
+            'Permanent Address': formData['perm-address'] || '—',
+            
+            // Present Address
+            'Present Same as Permanent': formData['same-address'] || 'Yes',
             'Present District': formData['pres-district'] || '—',
             'Present Division': formData['pres-division'] || '—',
+            'Present Upazila': formData['pres-upazila'] || '—',
+            'Present Post Office': formData['pres-post-office'] || '—',
+            'Present Post Code': formData['pres-post-code'] || '—',
+            'Present Address': formData['pres-address'] || '—',
             
-            // Family information
+            // Family Information
             'Father Name (English)': formData['father-name-en'] || '—',
+            'Father Name (Bangla)': formData['father-name-bn'] || '—',
+            'Father Occupation': formData['father-occupation'] || '—',
+            'Father Monthly Income': formData['father-income'] || '—',
             'Mother Name (English)': formData['mother-name-en'] || '—',
-            'Monthly Income': formData['monthly-income'] || '—',
+            'Mother Name (Bangla)': formData['mother-name-bn'] || '—',
+            'Mother Occupation': formData['mother-occupation'] || '—',
             'Household Members': formData['household-members'] || '—',
+            'Monthly Household Income': formData['monthly-income'] || '—',
+            'Daily Income per Member': formData['daily-income'] || '—',
             
-            // Education information
+            // Education
             'Education Level': formData['education-level'] || '—',
             'Institution Name': formData['institution-name'] || '—',
             'Passing Year': formData['passing-year'] || '—',
             'Grade/CGPA': formData['grade-cgpa'] || '—',
+            'Subjects': formData['subjects'] || '—',
             
-            // Employment information
+            // Employment
             'Employment Status': formData['employment-status'] || '—',
             'Organization Name': formData['org-name'] || '—',
             'Designation': formData['designation'] || '—',
+            'Years of Experience': formData['years-exp'] || '—',
             'Monthly Salary': formData['salary'] || '—',
             
-            // Training information
+            // Training Information
             'Training Program': formData['training-program'] || '—',
             'Training Start Date': formData['training-start-date'] || '—',
+            'Training End Date': formData['training-end-date'] || '—',
             'Training Source': formData['training-source'] || '—',
+            'Financial Support': formData['financial-support'] || '—',
             
-            // Additional notes
-            'PWD Status': formData['pwd'] || 'No',
-            'Marital Status': formData['marital-status'] || '—',
-            'Notes': formData['notes'] || '—'
+            // Bank Information
+            'Has Bank Account': formData['has-bank-account'] || 'No',
+            'Bank Name': formData['bank-name'] || '—',
+            'Account Number': formData['account-number'] || '—',
+            'Account Holder': formData['account-holder'] || '—',
+            
+            // Additional Notes
+            'Additional Notes': formData['notes'] || '—'
         };
         
-        // Submit to splitforms
+        // Send to splitforms
         const response = await fetch(SPLITFORMS_CONFIG.endpoint, {
             method: 'POST',
             headers: {
@@ -124,7 +148,7 @@ async function submitToSplitForms(formData) {
         }
         
     } catch (error) {
-        console.error('❌ splitforms submission error:', error);
+        console.error('❌ splitforms error:', error);
         return {
             success: false,
             message: `Error: ${error.message}`,
@@ -134,28 +158,44 @@ async function submitToSplitForms(formData) {
 }
 
 /**
- * Alternative: Form-based submission (no JavaScript required)
- * Use this in HTML instead of JavaScript fetch
- * 
- * <form action="https://splitforms.com/api/submit" method="POST">
- *   <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
- *   <input type="hidden" name="form_loaded_at" id="form-loaded-at">
- *   <input type="checkbox" name="botcheck" style="display:none" tabindex="-1">
- *   <input type="text" name="Full Name (English)" required>
- *   <input type="email" name="Email" required>
- *   <textarea name="Notes"></textarea>
- *   <button type="submit">Submit</button>
- * </form>
- * 
- * <script>
- *   document.getElementById('form-loaded-at').value = Date.now();
- * </script>
+ * Fallback: Submit via EmailJS (if splitforms fails)
  */
+async function submitViaEmailJS(formData) {
+    console.log('📧 Trying EmailJS fallback...');
+    
+    try {
+        if (typeof emailjs === 'undefined') {
+            throw new Error('EmailJS SDK not loaded');
+        }
+        
+        emailjs.init(EMAILJS_CONFIG.publicKey);
+        
+        const templateParams = {
+            to_email: formData['email'],
+            to_name: formData['full-name-en'] || formData['full-name-bn'],
+            from_name: 'Trainee Registration System',
+            subject: 'Trainee Registration Confirmation',
+            message: `Thank you ${formData['full-name-en']} for registering!`
+        };
+        
+        const result = await emailjs.send(
+            EMAILJS_CONFIG.serviceId,
+            EMAILJS_CONFIG.templateId,
+            templateParams
+        );
+        
+        return { success: true, message: 'Email sent via EmailJS' };
+        
+    } catch (error) {
+        console.error('❌ EmailJS error:', error);
+        return { success: false, message: error.text || 'EmailJS failed' };
+    }
+}
 
 /**
- * Updated submitForm function for trainee portal
+ * Main submit function - tries splitforms first, falls back to EmailJS
  */
-async function submitForm(splitformsEnabled = true) {
+async function submitForm() {
     // Show loading state
     const loadingEl = document.getElementById('loading');
     const statusEl = document.getElementById('email-status');
@@ -173,51 +213,60 @@ async function submitForm(splitformsEnabled = true) {
         
         // Validate required fields
         if (!formData['email']) {
-            throw new Error('Email is required!');
+            throw new Error('❌ Email is required!');
         }
         
         if (!formData['full-name-en'] && !formData['full-name-bn']) {
-            throw new Error('Name is required!');
+            throw new Error('❌ Name is required!');
         }
         
-        // Submit to splitforms
-        let splitResult = null;
+        console.log('📋 Form data validated');
         
-        if (splitformsEnabled && SPLITFORMS_CONFIG.accessKey !== 'YOUR_ACCESS_KEY_HERE') {
-            console.log('📤 Submitting to splitforms...');
-            splitResult = await submitToSplitForms(formData);
+        // Try splitforms first
+        let result = null;
+        
+        if (SPLITFORMS_CONFIG.accessKey !== 'YOUR_ACCESS_KEY_HERE') {
+            console.log('🚀 Attempting splitforms submission...');
+            result = await submitToSplitForms(formData);
             
-            if (!splitResult.success) {
-                throw new Error(splitResult.message);
+            if (result.success) {
+                console.log('✅ splitforms succeeded');
+            } else {
+                console.warn('⚠️ splitforms failed, trying fallback...');
             }
-            
-            console.log('✅ splitforms submission successful');
         } else {
             console.warn('⚠️ splitforms not configured, using simulation');
-            // Fallback: simulate success
             await new Promise(resolve => setTimeout(resolve, 1000));
-            splitResult = {
+            result = {
                 success: true,
                 message: 'Form submitted (demo mode - configure splitforms for production)'
             };
         }
         
-        // Generate PDF (existing functionality)
-        await generatePDF(formData);
-        
-        // Show success message
-        if (statusEl) {
-            statusEl.innerHTML = `✅ <strong>Success!</strong> ${splitResult.message}`;
-            statusEl.className = 'email-status success';
+        // Fallback to EmailJS if splitforms failed
+        if (!result.success && EMAILJS_CONFIG.publicKey !== 'YOUR_PUBLIC_KEY_HERE') {
+            console.log('📧 Falling back to EmailJS...');
+            result = await submitViaEmailJS(formData);
         }
         
-        // Optional: Redirect to thank you page
-        // window.location.href = '/thank-you.html';
+        // Generate PDF
+        await generatePDF(formData);
         
-        return splitResult;
+        // Show result
+        if (statusEl) {
+            if (result.success) {
+                statusEl.innerHTML = `✅ <strong>Success!</strong> ${result.message}`;
+                statusEl.className = 'email-status success';
+            } else {
+                statusEl.innerHTML = `❌ <strong>Error:</strong> ${result.message}`;
+                statusEl.className = 'email-status error';
+            }
+        }
+        
+        return result;
         
     } catch (error) {
-        console.error('❌ Submission failed:', error);
+        console.error('❌ Submission error:', error);
         
         if (statusEl) {
             statusEl.innerHTML = `❌ <strong>Error:</strong> ${error.message}`;
@@ -233,19 +282,19 @@ async function submitForm(splitformsEnabled = true) {
 
 /**
  * Helper: Generate PDF from form data
- * This uses your existing PDF generation code
  */
 async function generatePDF(formData) {
-    // Your existing PDF generation code here
-    // See: exportPDF() function in index.html
-    console.log('📄 Generating PDF...', formData);
+    console.log('📄 Generating PDF...');
     
-    // Call your existing PDF generation
+    // Call existing PDF generation function
     if (typeof exportPDF === 'function') {
         exportPDF();
     }
 }
 
-// Export for global use
+// Export functions for global use
 window.submitToSplitForms = submitToSplitForms;
-window.submitForm = submitForm;
+window.submitViaEmailJS = submitViaEmailJS;
+
+// Update the existing submitForm to use our new function
+// The HTML button should call: onclick="submitForm()"
