@@ -1911,6 +1911,69 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize
 window.onload = loadData;
+
+// Submit Form with splitforms
+async function submitForm() {
+  console.log('🚀 submitForm called');
+  
+  if(!confirm('Submit the form? This will send your registration data to our system.')) {
+    return;
+  }
+  
+  formData = collectFormData();
+  console.log('📋 Form data collected:', formData);
+  
+  if(!formData['email']) {
+    alert('❌ Email is required!');
+    return;
+  }
+  
+  // Show loading
+  const loadingEl = document.getElementById('loading');
+  const statusEl = document.getElementById('email-status');
+  
+  if(loadingEl) loadingEl.classList.add('active');
+  if(statusEl) {
+    statusEl.style.display = 'block';
+    statusEl.innerHTML = '⏳ Submitting...';
+    statusEl.className = 'email-status';
+  }
+  
+  try {
+    // Submit to splitforms
+    console.log('📤 Calling splitforms...');
+    const result = await submitToSplitForms(formData);
+    console.log('📥 Result:', result);
+    
+    // Generate PDF
+    if(typeof exportPDF === 'function') {
+      exportPDF();
+    }
+    
+    // Show result
+    if(statusEl) {
+      if(result.success) {
+        statusEl.innerHTML = `✅ <strong>Success!</strong> ${result.message}`;
+        statusEl.className = 'email-status success';
+      } else {
+        statusEl.innerHTML = `❌ <strong>Error:</strong> ${result.message}`;
+        statusEl.className = 'email-status error';
+      }
+    }
+    
+    return result;
+    
+  } catch(error) {
+    console.error('❌ Error:', error);
+    if(statusEl) {
+      statusEl.innerHTML = `❌ <strong>Error:</strong> ${error.message}`;
+      statusEl.className = 'email-status error';
+    }
+    throw error;
+  } finally {
+    if(loadingEl) loadingEl.classList.remove('active');
+  }
+}
 </script>
 
 <footer style="text-align:center; padding:24px; font-size:12px; color:#64748b; border-top:1px solid #e2e8f0; margin-top:40px;">
