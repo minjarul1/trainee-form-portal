@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="splitforms.js"></script>
 <style>
 :root {
   --navy: #0f172a;
@@ -1893,6 +1894,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize
 window.onload = loadData;
+
+// Submit Form with splitforms
+async function submitForm() {
+  if(!confirm('Submit the form? This will send your registration data to our system.')) {
+    return;
+  }
+  
+  formData = collectFormData();
+  
+  if(!formData['email']) {
+    alert('❌ Email is required!');
+    return;
+  }
+  
+  // Show loading
+  const loadingEl = document.getElementById('loading');
+  const statusEl = document.getElementById('email-status');
+  
+  if(loadingEl) loadingEl.classList.add('active');
+  if(statusEl) {
+    statusEl.style.display = 'block';
+    statusEl.innerHTML = '⏳ Submitting...';
+    statusEl.className = 'email-status';
+  }
+  
+  try {
+    // Submit to splitforms
+    const result = await submitToSplitForms(formData);
+    
+    // Generate PDF
+    await new Promise(resolve => setTimeout(resolve, 500));
+    exportPDF();
+    
+    // Show result
+    if(statusEl) {
+      if(result.success) {
+        statusEl.innerHTML = `✅ <strong>Success!</strong> ${result.message}`;
+        statusEl.className = 'email-status success';
+      } else {
+        statusEl.innerHTML = `❌ <strong>Error:</strong> ${result.message}`;
+        statusEl.className = 'email-status error';
+      }
+    }
+    
+    return result;
+    
+  } catch(error) {
+    if(statusEl) {
+      statusEl.innerHTML = `❌ <strong>Error:</strong> ${error.message}`;
+      statusEl.className = 'email-status error';
+    }
+    throw error;
+  } finally {
+    if(loadingEl) loadingEl.classList.remove('active');
+  }
+}
 </script>
 
 <footer style="text-align:center; padding:24px; font-size:12px; color:#64748b; border-top:1px solid #e2e8f0; margin-top:40px;">
