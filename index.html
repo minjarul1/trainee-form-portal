@@ -1212,21 +1212,38 @@ textarea {
 <script>
   let formData = {};
   let fileDataStore = {};
+  let currentTab = 'personal';  // Initialize currentTab variable
 
 // Tab Navigation
 function showTab(tabId) {
+  console.log('🔄 Showing tab:', tabId);
+  
+  // Remove active class from all sections and buttons
   document.querySelectorAll('.form-section').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
   
+  // Show target section
   const targetSection = document.getElementById(tabId === 'preview' ? 'preview-section' : tabId);
-  if(targetSection) targetSection.classList.add('active');
+  if(targetSection) {
+    targetSection.classList.add('active');
+    console.log('✅ Section shown:', tabId);
+  } else {
+    console.error('❌ Section not found:', tabId);
+  }
   
+  // Activate corresponding tab button
   const activeBtn = document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
-  if(activeBtn) activeBtn.classList.add('active');
+  if(activeBtn) {
+    activeBtn.classList.add('active');
+  }
   
+  // Update current tab
   currentTab = tabId;
+  
+  // Scroll to top
   window.scrollTo({ top: 0, behavior: 'smooth' });
   
+  // Render preview if needed
   if(tabId === 'preview') {
     setTimeout(renderPreview, 100);
   }
