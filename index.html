@@ -2026,13 +2026,20 @@ async function submitForm() {
       pdf_attachment: pdfBase64
     };
 
+    // Admin notification - send to your email
     console.log('📧 Sending admin email...');
-    const adminResult = await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.adminTemplateId, emailParams);
+    const adminResult = await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.adminTemplateId, {
+      ...emailParams,
+      reply_to: formData['email'] || ''
+    });
     console.log('✅ Admin email sent:', adminResult);
 
-    console.log('📧 Sending trainee confirmation...');
-    const traineeResult = await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.traineeTemplateId, emailParams);
-    console.log('✅ Trainee email sent:', traineeResult);
+    // Trainee confirmation - send to user's email
+    if (formData['email']) {
+      console.log('📧 Sending trainee confirmation...');
+      const traineeResult = await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.traineeTemplateId, emailParams);
+      console.log('✅ Trainee email sent:', traineeResult);
+    }
 
     // Show result
     if(statusEl) {
