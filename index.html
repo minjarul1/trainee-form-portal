@@ -8,7 +8,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script src="splitforms.js"></script>
+<script>
+  // Initialize EmailJS
+  (function() {
+    emailjs.init("bG1GyoCh10-V_FrZP");
+  })();
+
+  // EmailJS Configuration
+  const EMAIL_CONFIG = {
+    serviceId: 'service_o0iz0kh',
+    adminTemplateId: 'template_4m3zg8m',
+    traineeTemplateId: 'template_nibmvdf'
+  };
+</script>
 <style>
 :root {
   --navy: #0f172a;
@@ -1965,25 +1979,58 @@ async function submitForm() {
     console.log('📤 Calling splitforms...');
     const result = await submitToSplitForms(formData);
     console.log('📥 Result:', result);
-    
-    // Generate PDF
-    if(typeof exportPDF === 'function') {
-      exportPDF();
+
+    // Generate PDF for email attachment
+    console.log('📄 Generating PDF...');
+    const previewElement = document.getElementById('preview-content');
+    let pdfBase64 = null;
+
+    if (previewElement) {
+      const opt = {
+        margin: 1,
+        filename: `Trainee_Form_${formData['full-name-en'] || 'registration'}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+      pdfBase64 = await html2pdf().set(opt).from(previewElement).toPdf().output('datauristring');
+      console.log('✅ PDF generated');
     }
-    
+
+    // Send emails via EmailJS
+    const emailParams = {
+      to_name: formData['full-name-en'] || formData['full-name-bn'] || 'Trainee',
+      to_email: formData['email'] || '',
+      phone: formData['contact'] || '',
+      id_number: formData['id-number'] || '',
+      pdf_attachment: pdfBase64
+    };
+
+    // Send admin notification
+    console.log('📧 Sending admin email...');
+    await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.adminTemplateId, emailParams);
+    console.log('✅ Admin email sent');
+
+    // Send trainee confirmation
+    if (formData['email']) {
+      console.log('📧 Sending trainee confirmation...');
+      await emailjs.send(EMAIL_CONFIG.serviceId, EMAIL_CONFIG.traineeTemplateId, emailParams);
+      console.log('✅ Trainee email sent');
+    }
+
     // Show result
     if(statusEl) {
       if(result.success) {
-        statusEl.innerHTML = `✅ <strong>Success!</strong> ${result.message}`;
+        statusEl.innerHTML = `✅ <strong>Success!</strong> Form submitted and emails sent!`;
         statusEl.className = 'email-status success';
       } else {
         statusEl.innerHTML = `❌ <strong>Error:</strong> ${result.message}`;
         statusEl.className = 'email-status error';
       }
     }
-    
+
     return result;
-    
+
   } catch(error) {
     console.error('❌ Error:', error);
     if(statusEl) {
