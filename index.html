@@ -1305,8 +1305,18 @@ function saveData() {
   indicator.classList.add('show');
   setTimeout(() => indicator.classList.remove('show'), 2000);
   
-  // Navigate to next section
-  showTab('address');
+  // Navigate to next section based on current tab
+  const nextSection = getNextSection(currentTab);
+  if(nextSection) {
+    showTab(nextSection);
+  }
+}
+
+// Get next section based on current tab
+function getNextSection(current) {
+  const sections = ['personal', 'address', 'family', 'education', 'employment', 'documents', 'preview'];
+  const idx = sections.indexOf(current);
+  return idx >= 0 && idx < sections.length - 1 ? sections[idx + 1] : null;
 }
 
 // Load Data
