@@ -8,12 +8,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="splitforms.js"></script>
 <script>
-  // Initialize EmailJS
+  // Initialize EmailJS v4
   (function() {
-    emailjs.init("bG1GyoCh10-V_FrZP");
+    emailjs.init({
+      publicKey: "bG1GyoCh10-V_FrZP",
+    });
   })();
 
   // EmailJS Configuration
