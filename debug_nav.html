@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Debug Nav</title>
+  <style>
+    .form-section { display: none; padding: 20px; border: 1px solid #ccc; margin: 10px 0; }
+    .form-section.active { display: block; }
+    .btn { padding: 10px 20px; margin: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Navigation Debug Test</h1>
+  
+  <section id="personal" class="form-section active">
+    <h2>Personal</h2>
+    <button class="btn" onclick="showTab('address')">Next: Address →</button>
+  </section>
+  
+  <section id="address" class="form-section">
+    <h2>Address</h2>
+    <button class="btn" onclick="showTab('family')">Next: Family →</button>
+  </section>
+  
+  <section id="family" class="form-section">
+    <h2>Family</h2>
+    <button class="btn" onclick="showTab('education')">Next: Education →</button>
+  </section>
+  
+  <section id="education" class="form-section">
+    <h2>Education</h2>
+    <button class="btn" onclick="showTab('employment')">Next: Employment →</button>
+  </section>
+  
+  <section id="employment" class="form-section">
+    <h2>Employment</h2>
+    <button class="btn" onclick="showTab('preview')">Next: Preview →</button>
+  </section>
+  
+  <section id="preview" class="form-section">
+    <h2>Preview</h2>
+    <p>Done!</p>
+  </section>
+
+  <script>
+    let currentTab = 'personal';
+    
+    function showTab(tabId) {
+      console.log('Showing tab:', tabId);
+      document.querySelectorAll('.form-section').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById(tabId);
+      if(target) {
+        target.classList.add('active');
+        currentTab = tabId;
+        console.log('✓ Navigated to:', tabId);
+      } else {
+        console.error('✗ Section not found:', tabId);
+      }
+    }
+  </script>
+</body>
+</html>
