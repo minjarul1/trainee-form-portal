@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head><title>Splitforms Test</title></head>
+<body>
+<h1>Test splitforms.js</h1>
+<button onclick="test()">Run Test</button>
+<pre id="log"></pre>
+<script src="https://minjarul1.github.io/trainee-form-portal/splitforms.js"></script>
+<script>
+function log(msg) {
+    document.getElementById('log').textContent += msg + '\n';
+    console.log(msg);
+}
+
+function test() {
+    log('=== Testing splitforms.js ===');
+    log('SPLITFORMS_CONFIG: ' + (typeof SPLITFORMS_CONFIG));
+    log('submitForm: ' + typeof submitForm);
+    log('submitToSplitForms: ' + typeof submitToSplitForms);
+    
+    if (typeof submitForm === 'function') {
+        log('✅ submitForm is ready!');
+    } else {
+        log('❌ submitForm is NOT ready');
+    }
+}
+
+log('Page loaded. Click button to test.');
+</script>
+</body>
+</html>
