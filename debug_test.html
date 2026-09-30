@@ -1,106 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Form Submission</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
-        .success { color: green; padding: 20px; background: #d4edda; border-radius: 8px; }
-        .error { color: red; padding: 20px; background: #f8d7da; border-radius: 8px; }
-        .info { background: #d1ecf1; padding: 15px; border-radius: 8px; margin: 20px 0; }
-        pre { background: #f4f4f4; padding: 15px; border-radius: 8px; overflow-x: auto; }
-        button { padding: 15px 30px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin: 10px 5px; }
-        button:hover { background: #0056b3; }
-    </style>
-</head>
+<html>
+<head><title>Debug Test</title></head>
 <body>
-    <h1>🧪 Trainee Form Debug Test</h1>
-    
-    <div class="info">
-        <h3>Test Configuration:</h3>
-        <ul>
-            <li><strong>Access Key:</strong> 33b74c40648c42308bd9f449d629f031</li>
-            <li><strong>Endpoint:</strong> https://splitforms.com/api/submit</li>
-            <li><strong>Deployed at:</strong> https://minjarul1.github.io/trainee-form-portal/</li>
-        </ul>
-    </div>
-    
-    <h3>Test Functions:</h3>
-    <button onclick="testSubmitToSplitForms()">Test submitToSplitForms()</button>
-    <button onclick="testSubmitForm()">Test submitForm()</button>
-    <button onclick="testCollectFormData()">Test collectFormData()</button>
-    <button onclick="clearLog()">Clear Log</button>
-    
-    <h3>Console Log:</h3>
-    <pre id="log"></pre>
-    
-    <script src="https://minjarul1.github.io/trainee-form-portal/splitforms.js"></script>
-    <script>
-        const logEl = document.getElementById('log');
-        
-        function log(msg) {
-            const timestamp = new Date().toLocaleTimeString();
-            logEl.textContent += `[${timestamp}] ${msg}\n`;
-            logEl.scrollTop = logEl.scrollHeight;
-            console.log(msg);
-        }
-        
-        function clearLog() {
-            logEl.textContent = '';
-        }
-        
-        // Mock collectFormData for testing
-        function collectFormData() {
-            return {
-                'full-name-en': 'Test User',
-                'full-name-bn': 'টেস্ট ইউজার',
-                'email': 'test@example.com',
-                'contact': '+880 1711-104318',
-                'dob': '1990-01-01',
-                'gender': 'Male',
-                'training-program': 'Python Development',
-                'perm-district': 'Dhaka',
-                'perm-division': 'Dhaka'
-            };
-        }
-        
-        async function testSubmitToSplitForms() {
-            log('🧪 Testing submitToSplitForms()...');
-            try {
-                const result = await submitToSplitForms(collectFormData());
-                log('📥 Result: ' + JSON.stringify(result, null, 2));
-                if (result.success) {
-                    log('✅ TEST PASSED!');
-                } else {
-                    log('❌ TEST FAILED: ' + result.message);
-                }
-            } catch (error) {
-                log('❌ Exception: ' + error.message);
-            }
-        }
-        
-        async function testSubmitForm() {
-            log('🧪 Testing submitForm()...');
-            try {
-                const result = await submitForm();
-                log('📥 Result: ' + JSON.stringify(result, null, 2));
-            } catch (error) {
-                log('❌ Exception: ' + error.message);
-            }
-        }
-        
-        function testCollectFormData() {
-            log('🧪 Testing collectFormData()...');
-            const data = collectFormData();
-            log('📋 Form data: ' + JSON.stringify(data, null, 2));
-        }
-        
-        log('✅ Page loaded. Click buttons to test functions.');
-        log('🔑 Access key: ' + (typeof SPLITFORMS_CONFIG !== 'undefined' ? SPLITFORMS_CONFIG.accessKey : 'NOT DEFINED'));
-        log('🌐 Endpoint: ' + (typeof SPLITFORMS_CONFIG !== 'undefined' ? SPLITFORMS_CONFIG.endpoint : 'NOT DEFINED'));
-        log('📦 submitToSplitForms: ' + (typeof submitToSplitForms));
-        log('📦 submitForm: ' + (typeof submitForm));
-    </script>
+<h1>🧪 Form Debug Test</h1>
+<button onclick="testFunctions()">Test Functions</button>
+<button onclick="testSplitforms()">Test splitforms API</button>
+<pre id="output"></pre>
+<script src="splitforms.js"></script>
+<script>
+function log(msg) {
+    document.getElementById('output').textContent += msg + '\n';
+    console.log(msg);
+}
+function testFunctions() {
+    log('=== Testing Functions ===');
+    log('submitForm: ' + typeof submitForm);
+    log('submitToSplitForms: ' + typeof submitToSplitForms);
+    log('showTab: ' + typeof showTab);
+    log('SPLITFORMS_CONFIG: ' + (typeof SPLITFORMS_CONFIG));
+    if (SPLITFORMS_CONFIG) {
+        log('Access Key: ' + SPLITFORMS_CONFIG.accessKey);
+    }
+}
+async function testSplitforms() {
+    log('\n=== Testing splitforms API ===');
+    try {
+        const result = await submitToSplitForms({
+            'full-name-en': 'Debug Test',
+            'email': 'test@test.com'
+        });
+        log('Result: ' + JSON.stringify(result, null, 2));
+    } catch(e) {
+        log('Error: ' + e.message);
+    }
+}
+log('Page loaded. Click buttons to test.');
+</script>
 </body>
 </html>
