@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head><title>Form Functions Test</title></head>
+<body>
+<h1>🧪 Form Functions Verification</h1>
+<div id="results"></div>
+<script>
+// Test if currentTab is initialized
+let currentTabCheck = (typeof currentTab !== 'undefined') ? currentTab : 'NOT DEFINED';
+document.getElementById('results').innerHTML += `<p>currentTab: ${currentTabCheck}</p>`;
+
+// Test if showTab function exists
+let showTabCheck = (typeof showTab === 'function') ? 'FUNCTION' : 'NOT FOUND';
+document.getElementById('results').innerHTML += `<p>showTab: ${showTabCheck}</p>`;
+
+// Test if submitForm function exists (our local version)
+let submitFormCheck = (typeof submitForm === 'function') ? 'FUNCTION' : 'NOT FOUND';
+document.getElementById('results').innerHTML += `<p>submitForm: ${submitFormCheck}</p>`;
+
+// Test if submitToSplitForms exists (from splitforms.js)
+let submitToSplitFormsCheck = (typeof submitToSplitForms === 'function') ? 'FUNCTION' : 'NOT FOUND';
+document.getElementById('results').innerHTML += `<p>submitToSplitForms: ${submitToSplitFormsCheck}</p>`;
+
+// Test if splitforms.js loaded
+let splitformsLoaded = (typeof SPLITFORMS_CONFIG !== 'undefined') ? 'LOADED' : 'NOT LOADED';
+document.getElementById('results').innerHTML += `<p>splitforms.js: ${splitformsLoaded}</p>`;
+
+// Test a tab switch
+if(typeof showTab === 'function') {
+  document.getElementById('results').innerHTML += `<p>🔄 Testing showTab('address')...</p>`;
+  try {
+    showTab('address');
+    document.getElementById('results').innerHTML += `<p>✅ showTab('address') executed successfully</p>`;
+  } catch(e) {
+    document.getElementById('results').innerHTML += `<p>❌ Error in showTab: ${e.message}</p>`;
+  }
+}
+</script>
+</body>
+</html>
