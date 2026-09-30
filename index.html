@@ -1982,21 +1982,39 @@ async function submitForm() {
     const result = await submitToSplitForms(formData);
     console.log('📥 Result:', result);
 
-    // Generate PDF for email attachment
+    // Generate PDF for email attachment (optimized for size)
     console.log('📄 Generating PDF...');
     const previewElement = document.getElementById('preview-content');
     let pdfBase64 = null;
 
     if (previewElement) {
       const opt = {
-        margin: 1,
+        margin: 0.5,
         filename: `Trainee_Form_${formData['full-name-en'] || 'registration'}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
+        image: { type: 'jpeg', quality: 0.3 },  // Lower quality for smaller size
+        html2canvas: { scale: 1, useCORS: true },  // Reduced scale
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
       pdfBase64 = await html2pdf().set(opt).from(previewElement).toPdf().output('datauristring');
       console.log('✅ PDF generated');
+      
+      // Check size and compress if needed
+      const pdfSize = (pdfBase64.length / 1024).toFixed(2);
+      console.log('📊 PDF size:', pdfSize, 'KB');
+      
+      // If still too large, create text-only version
+      if (parseInt(pdfSize) > 45) {
+        console.log('⚠️ PDF too large, creating text-only version...');
+        const textOpt = {
+          margin: 0.5,
+          filename: `Trainee_Form_${formData['full-name-en'] || 'registration'}.pdf`,
+          image: { type: 'jpeg', quality: 0.1 },
+          html2canvas: { scale: 0.5, useCORS: true },
+          jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+        pdfBase64 = await html2pdf().set(textOpt).from(previewElement).toPdf().output('datauristring');
+        console.log('✅ Text-only PDF generated');
+      }
     }
 
     // Send emails via EmailJS
