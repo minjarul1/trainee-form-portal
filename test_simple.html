@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Test</title>
+</head>
+<body>
+    <h1>Trainee Form Test</h1>
+    <button onclick="testForm()">Test Form</button>
+    <div id="result"></div>
+    <script src="splitforms.js"></script>
+    <script>
+        function testForm() {
+            const result = document.getElementById('result');
+            result.innerHTML = '<p>Testing...</p>';
+            
+            // Check if functions exist
+            if (typeof submitForm === 'undefined') {
+                result.innerHTML = '<p style="color:red">ERROR: submitForm is not defined</p>';
+                return;
+            }
+            
+            if (typeof SPLITFORMS_CONFIG === 'undefined') {
+                result.innerHTML = '<p style="color:red">ERROR: SPLITFORMS_CONFIG is not defined</p>';
+                return;
+            }
+            
+            result.innerHTML = '<p style="color:green">Functions loaded correctly!</p>';
+            result.innerHTML += '<p>Access Key: ' + SPLITFORMS_CONFIG.accessKey + '</p>';
+        }
+    </script>
+</body>
+</html>
