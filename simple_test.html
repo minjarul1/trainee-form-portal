@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Form Test</title>
+</head>
+<body>
+    <h1>🧪 Simple Form Test</h1>
+    
+    <div id="status">Loading...</div>
+    
+    <button onclick="testSubmit()">Test Submit</button>
+    
+    <script src="splitforms.js"></script>
+    <script>
+        // Check if functions loaded
+        document.getElementById('status').innerHTML = 
+            'submitForm: ' + typeof submitForm + '<br>' +
+            'submitToSplitForms: ' + typeof submitToSplitForms + '<br>' +
+            'SPLITFORMS_CONFIG: ' + (typeof SPLITFORMS_CONFIG);
+        
+        async function testSubmit() {
+            const result = document.getElementById('result');
+            result.innerHTML = 'Testing...';
+            
+            if (typeof submitToSplitForms !== 'function') {
+                result.innerHTML = 'ERROR: submitToSplitForms not loaded';
+                return;
+            }
+            
+            try {
+                const data = await submitToSplitForms({
+                    'full-name-en': 'Test User',
+                    'email': 'test@test.com'
+                });
+                result.innerHTML = 'Result: ' + JSON.stringify(data, null, 2);
+            } catch (e) {
+                result.innerHTML = 'Error: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
