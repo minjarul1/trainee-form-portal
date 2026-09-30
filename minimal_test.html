@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head><title>Minimal Test</title></head>
+<body>
+<h1>🧪 Minimal Form Test</h1>
+<p>Access Key: 33b74c40648c42308bd9f449d629f031</p>
+<button onclick="testNow()">Test Now</button>
+<pre id="log"></pre>
+
+<script>
+function log(msg) {
+    document.getElementById('log').textContent += msg + '\n';
+    console.log(msg);
+}
+
+async function testNow() {
+    log('=== Starting Test ===');
+    
+    // Test 1: Check if splitforms.js is loaded
+    log('1. Checking splitforms.js...');
+    if (typeof SPLITFORMS_CONFIG === 'undefined') {
+        log('❌ SPLITFORMS_CONFIG not loaded!');
+        return;
+    }
+    log('✅ SPLITFORMS_CONFIG loaded');
+    log('   Access Key: ' + SPLITFORMS_CONFIG.accessKey);
+    
+    // Test 2: Check if functions exist
+    log('\n2. Checking functions...');
+    log('   submitForm: ' + typeof submitForm);
+    log('   submitToSplitForms: ' + typeof submitToSplitForms);
+    
+    if (typeof submitToSplitForms !== 'function') {
+        log('❌ submitToSplitForms not found!');
+        return;
+    }
+    log('✅ Functions loaded');
+    
+    // Test 3: Test API call
+    log('\n3. Testing API call...');
+    try {
+        const result = await submitToSplitForms({
+            'full-name-en': 'Test User',
+            'email': 'test@test.com'
+        });
+        log('✅ API Response: ' + JSON.stringify(result));
+        
+        if (result.success) {
+            log('\n🎉 TEST PASSED! Form is working!');
+        } else {
+            log('\n⚠️ API returned error: ' + result.message);
+        }
+    } catch (error) {
+        log('❌ Error: ' + error.message);
+    }
+}
+
+log('Page loaded. Click "Test Now" button.');
+</script>
+</body>
+</html>
