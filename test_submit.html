@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test splitforms</title></head>
+<body>
+    <h1>Test splitforms Integration</h1>
+    <button onclick="runTest()">Run Test</button>
+    <pre id="result"></pre>
+    
+    <script src="splitforms.js"></script>
+    <script>
+        async function runTest() {
+            const testDate = {
+                'full-name-en': 'Test User',
+                'full-name-bn': 'টেস্ট ইউজার',
+                'email': 'test@example.com',
+                'contact': '+880 1711-104318',
+                'training-program': 'Python Development',
+                'dob': '1990-01-01',
+                'gender': 'Male',
+                'nationality': 'Bangladeshi',
+                'perm-district': 'Dhaka',
+                'father-name-en': 'Father Name',
+                'mother-name-en': 'Mother Name',
+                'education-level': 'Bachelor',
+                'employment-status': 'Student'
+            };
+            
+            document.getElementById('result').textContent = 'Testing...';
+            const result = await submitToSplitForms(testDate);
+            document.getElementById('result').textContent = JSON.stringify(result, null, 2);
+        }
+    </script>
+</body>
+</html>
