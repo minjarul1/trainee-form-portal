@@ -1497,48 +1497,59 @@ function exportWord() {
 <meta charset="utf-8">
 <title>Trainee Registration Form</title>
 <style>
-@page { 
-  size: A4; 
-  margin: 0.5in 0.5in 0.5in 0.5in;
-}
-body { 
-  font-family: 'Courier New', Courier, monospace; 
-  font-size: 8pt; 
-  color: #000;
-  line-height: 1.3;
-}
-h1 { 
-  text-align: center; 
-  font-size: 14pt; 
-  font-weight: bold;
-  margin: 0 0 3px 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.subtitle {
-  text-align: center;
-  font-size: 7pt;
-  color: #666;
-  margin: 0 0 8px 0;
-}
-.page-break { page-break-after: always; }
-h2 { 
-  font-size: 9pt; 
-  font-weight: bold;
-  margin: 8px 0 4px 0;
-  padding: 3px 6px;
-  background: #f0f0f0;
-  border-left: 3px solid #333;
-  text-transform: uppercase;
-}
-table { 
-  width: 100%; 
-  border-collapse: collapse; 
-  margin-bottom: 8px;
-  font-size: 7.5pt;
-}
-th { 
-  background: #e8e8e8;
+@page { size: A4; margin: 0.5in; }
+body { font-family: Arial, sans-serif; font-size: 10pt; color: #000; line-height: 1.3; }
+h1 { text-align: center; font-size: 16pt; font-weight: bold; margin: 0 0 10px 0; }
+.subtitle { text-align: center; font-size: 10pt; color: #666; margin: 0 0 15px 0; }
+h2 { font-size: 12pt; font-weight: bold; margin: 15px 0 8px 0; padding: 5px 8px; background: #f0f0f0; border-left: 3px solid #333; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+th { background: #e8e8e8; padding: 6px 8px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 10pt; }
+td { padding: 6px 8px; border: 1px solid #999; vertical-align: middle; }
+td.label { width: 30%; background: #fafafa; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>Trainee Registration Form</h1>
+<div class="subtitle">ISISC-ASSET AI Technology Project | EBT | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
+
+${fileDataStore['photo'] ? `
+<table style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;">
+<tr>
+  <td style="width: 150px; text-align: center; vertical-align: top; padding: 15px; border: none;">
+    <div style="font-weight: bold; margin-bottom: 10px; font-size: 11pt;">PASSPORT PHOTO</div>
+    <img src="${fileDataStore['photo']}" style="width: 1.79in; height: 1.47in; object-fit: cover; border: 1px solid #999;" />
+  </td>
+  <td style="vertical-align: top; padding: 15px; border: none;">
+    <table style="width: 100%; border: none;">
+      <tr><td style="width: 140px; padding: 4px 0; font-weight: bold; font-size: 10pt;">Name (English):</td><td style="padding: 4px 0; font-size: 10pt;">${getValue('full-name-en')}</td></tr>
+      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 10pt;">Date of Birth:</td><td style="padding: 4px 0; font-size: 10pt;">${getValue('dob')}</td></tr>
+      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 10pt;">Gender:</td><td style="padding: 4px 0; font-size: 10pt;">${getValue('gender')}</td></tr>
+      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 10pt;">Contact:</td><td style="padding: 4px 0; font-size: 10pt;">${getValue('contact')}</td></tr>
+      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 10pt;">Email:</td><td style="padding: 4px 0; font-size: 10pt;">${getValue('email')}</td></tr>
+    </table>
+  </td>
+</tr>
+</table>
+` : ''}
+
+<!-- PAGE 1 -->
+<h2>Personal Information</h2>
+<table>
+<tr><th>Field</th><th>Details</th></tr>
+<tr><td class="label">Name (English)</td><td class="value">${getValue('full-name-en')}</td></tr>
+<tr><td class="label">Name (Bangla)</td><td class="value">${getValue('full-name-bn')}</td></tr>
+<tr><td class="label">Date of Birth</td><td class="value">${getValue('dob')}</td></tr>
+<tr><td class="label">Gender</td><td class="value">${getValue('gender')}</td></tr>
+<tr><td class="label">Nationality</td><td class="value">${getValue('nationality')}</td></tr>
+<tr><td class="label">Religion</td><td class="value">${getValue('religion')}</td></tr>
+<tr><td class="label">ID Type</td><td class="value">${getValue('id-type')}</td></tr>
+<tr><td class="label">ID Number</td><td class="value">${getValue('id-number')}</td></tr>
+<tr><td class="label">Contact</td><td class="value">${getValue('contact')}</td></tr>
+<tr><td class="label">Email</td><td class="value">${getValue('email')}</td></tr>
+<tr><td class="label">PWD</td><td class="value">${getValue('pwd')}</td></tr>
+<tr><td class="label">Marital Status</td><td class="value">${getValue('marital-status')}</td></tr>
+</table>
   padding: 4px 6px; 
   text-align: left; 
   font-weight: bold; 
