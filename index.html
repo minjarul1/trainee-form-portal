@@ -1368,6 +1368,26 @@ function renderPreview() {
       <p style="margin-top: 8px; font-size: 12px;">Generated: ${new Date().toLocaleDateString('en-GB')}</p>
     </div>
     
+    ${fileDataStore['photo'] ? `
+    <table style="width: 100%; margin-bottom: 20px; border: none;">
+      <tr>
+        <td style="width: 25%; text-align: center; vertical-align: top; border: none; padding: 10px;">
+          <div style="font-weight: bold; margin-bottom: 8px; color: var(--text-muted); font-size: 12px;">Passport Photo</div>
+          <img src="${fileDataStore['photo']}" style="width: 1.79in; height: 1.47in; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;" />
+        </td>
+        <td style="width: 75%; vertical-align: top; border: none; padding: 10px;">
+          <table style="width: 100%; border: none;">
+            <tr><td style="width: 150px; padding: 5px 0; font-weight: 500; color: var(--text-muted);">Full Name (English):</td><td style="padding: 5px 0; font-weight: 600;">${getValue('full-name-en')}</td></tr>
+            <tr><td style="padding: 5px 0; font-weight: 500; color: var(--text-muted);">Date of Birth:</td><td style="padding: 5px 0;">${getValue('dob')}</td></tr>
+            <tr><td style="padding: 5px 0; font-weight: 500; color: var(--text-muted);">Gender:</td><td style="padding: 5px 0;">${getValue('gender')}</td></tr>
+            <tr><td style="padding: 5px 0; font-weight: 500; color: var(--text-muted);">Contact:</td><td style="padding: 5px 0;">${getValue('contact')}</td></tr>
+            <tr><td style="padding: 5px 0; font-weight: 500; color: var(--text-muted);">Email:</td><td style="padding: 5px 0;">${getValue('email')}</td></tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    ` : ''}
+    
     <div class="preview-section">
       <div class="preview-section-title">👤 Personal Information</div>
       <div class="preview-field"><div class="preview-label">Full Name (English):</div><div class="preview-value ${isNotEmpty('full-name-en')?'highlight':''}">${getValue('full-name-en')}</div></div>
@@ -1565,6 +1585,26 @@ td.value {
 <h1>Trainee Registration Form</h1>
 <div class="subtitle">ISISC-ASSET AI Technology Project | EBT | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
 
+${fileDataStore['photo'] ? `
+<table style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;">
+<tr>
+  <td style="width: 150px; text-align: center; vertical-align: top; padding: 15px; border: none;">
+    <div style="font-weight: bold; margin-bottom: 10px; font-size: 9pt;">PASSPORT PHOTO</div>
+    <img src="${fileDataStore['photo']}" style="width: 1.79in; height: 1.47in; object-fit: cover; border: 1px solid #999;" />
+  </td>
+  <td style="vertical-align: top; padding: 15px; border: none;">
+    <table style="width: 100%; border: none;">
+      <tr><td style="width: 140px; padding: 4px 0; font-weight: bold; font-size: 8pt;">Name (English):</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('full-name-en')}</td></tr>
+      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Date of Birth:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('dob')}</td></tr>
+      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Gender:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('gender')}</td></tr>
+      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Contact:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('contact')}</td></tr>
+      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Email:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('email')}</td></tr>
+    </table>
+  </td>
+</tr>
+</table>
+` : ''}
+
 <!-- PAGE 1 -->
 <h2>Personal Information</h2>
 <table>
@@ -1716,6 +1756,8 @@ td.value { width: 72%; }
 <body>
 <h1>Trainee Registration Form</h1>
 <div class="subtitle">ISISC-ASSET AI Technology Project | EBT | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
+
+${fileDataStore['photo'] ? `<table style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;"><tr><td style="width: 150px; text-align: center; vertical-align: top; padding: 15px; border: none;"><div style="font-weight: bold; margin-bottom: 10px; font-size: 9pt;">PASSPORT PHOTO</div><img src="${fileDataStore['photo']}" style="width: 1.79in; height: 1.47in; object-fit: cover; border: 1px solid #999;" /></td><td style="vertical-align: top; padding: 15px; border: none;"><table style="width: 100%; border: none;"><tr><td style="width: 140px; padding: 4px 0; font-weight: bold; font-size: 8pt;">Name (English):</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('full-name-en')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Date of Birth:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('dob')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Gender:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('gender')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Contact:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('contact')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Email:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('email')}</td></tr></table></td></tr></table>` : ''}
 
 <h2>Personal Information</h2>
 <table>
