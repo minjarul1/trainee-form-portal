@@ -1433,10 +1433,6 @@ function renderPreview() {
     <div class="preview-section">
       <div class="preview-section-title">📎 Documents Uploaded</div>
       <div class="preview-field"><div class="preview-label">Passport Photo:</div><div class="preview-value">${isNotEmpty('photo') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
-      <div class="preview-field"><div class="preview-label">Signature:</div><div class="preview-value">${isNotEmpty('signature') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
-      <div class="preview-field"><div class="preview-label">NID/ID Document:</div><div class="preview-value">${isNotEmpty('nid-doc') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
-      <div class="preview-field"><div class="preview-label">Educational Certificate:</div><div class="preview-value">${isNotEmpty('edu-cert') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
-      <div class="preview-field"><div class="preview-label">Work Experience Certificate:</div><div class="preview-value">${isNotEmpty('work-cert') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
       <div class="preview-field"><div class="preview-label">Bank Account Copy:</div><div class="preview-value">${isNotEmpty('bank-doc') ? '✅ Uploaded' : '❌ Not uploaded'}</div></div>
     </div>
     
@@ -1643,10 +1639,6 @@ td.value {
 <table>
 <tr><th>Document</th><th>Status</th></tr>
 <tr><td class="label">Passport Photo</td><td class="value ${isNotEmpty('photo') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('photo') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
-<tr><td class="label">Signature</td><td class="value ${isNotEmpty('signature') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('signature') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
-<tr><td class="label">NID/ID Document</td><td class="value ${isNotEmpty('nid-doc') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('nid-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
-<tr><td class="label">Educational Cert</td><td class="value ${isNotEmpty('edu-cert') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('edu-cert') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
-<tr><td class="label">Work Cert</td><td class="value">${isNotEmpty('work-cert') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
 <tr><td class="label">Bank Copy</td><td class="value">${isNotEmpty('bank-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
 </table>
 
@@ -1797,10 +1789,6 @@ td.value { width: 72%; }
 <table>
 <tr><th>Document</th><th>Status</th></tr>
 <tr><td class="label">Passport Photo</td><td class="value ${isNotEmpty('photo') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('photo') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
-<tr><td class="label">Signature</td><td class="value ${isNotEmpty('signature') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('signature') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
-<tr><td class="label">NID/ID Document</td><td class="value ${isNotEmpty('nid-doc') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('nid-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
-<tr><td class="label">Educational Cert</td><td class="value ${isNotEmpty('edu-cert') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('edu-cert') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
-<tr><td class="label">Work Cert</td><td class="value">${isNotEmpty('work-cert') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
 <tr><td class="label">Bank Copy</td><td class="value">${isNotEmpty('bank-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
 </table>
 
