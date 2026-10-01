@@ -1675,7 +1675,27 @@ td.value { width: 72%; }
 <h1>Trainee Registration Form</h1>
 <div class="subtitle">ISISC-ASSET AI Technology Project | EBT | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
 
-${fileDataStore['photo'] ? `<table style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;"><tr><td style="width: 150px; text-align: center; vertical-align: top; padding: 15px; border: none;"><div style="font-weight: bold; margin-bottom: 10px; font-size: 9pt;">PASSPORT PHOTO</div><img src="${fileDataStore['photo']}" style="width: 1.79in; height: 1.47in; object-fit: cover; border: 1px solid #999;" /></td><td style="vertical-align: top; padding: 15px; border: none;"><table style="width: 100%; border: none;"><tr><td style="width: 140px; padding: 4px 0; font-weight: bold; font-size: 8pt;">Name (English):</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('full-name-en')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Date of Birth:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('dob')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Gender:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('gender')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Contact:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('contact')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Email:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('email')}</td></tr></table></td></tr></table>` : ''}
+${fileDataStore['photo'] ? `
+<div style="border: 1px solid #ccc; padding: 8px; margin-bottom: 15px;">
+<table style="width: 100%; border: none;">
+<tr>
+  <td style="width: 140px; text-align: center; vertical-align: top; padding: 5px; border: none;">
+    <div style="font-weight: bold; margin-bottom: 5px;">PASSPORT PHOTO</div>
+    <img src="${fileDataStore['photo']}" style="width: 135px; height: 110px; object-fit: cover; border: 1px solid #999;" />
+  </td>
+  <td style="vertical-align: top; padding: 10px; border: none;">
+    <table style="width: 100%; border: none;">
+      <tr><td style="width: 130px; padding: 3px 0; font-weight: bold;">Name (English):</td><td style="padding: 3px 0;">${getValue('full-name-en')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Date of Birth:</td><td style="padding: 3px 0;">${getValue('dob')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Gender:</td><td style="padding: 3px 0;">${getValue('gender')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Contact:</td><td style="padding: 3px 0;">${getValue('contact')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Email:</td><td style="padding: 3px 0;">${getValue('email')}</td></tr>
+    </table>
+  </td>
+</tr>
+</table>
+</div>
+` : ''}
 
 <div class="page-break"></div>
 
@@ -1800,7 +1820,27 @@ td.value { width: 72%; }
 <h1>Trainee Registration Form</h1>
 <div class="subtitle">ISISC-ASSET AI Technology Project | EBT | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
 
-${fileDataStore['photo'] ? `<table style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;"><tr><td style="width: 150px; text-align: center; vertical-align: top; padding: 15px; border: none;"><div style="font-weight: bold; margin-bottom: 10px; font-size: 9pt;">PASSPORT PHOTO</div><img src="${fileDataStore['photo']}" style="width: 1.79in; height: 1.47in; object-fit: cover; border: 1px solid #999;" /></td><td style="vertical-align: top; padding: 15px; border: none;"><table style="width: 100%; border: none;"><tr><td style="width: 140px; padding: 4px 0; font-weight: bold; font-size: 8pt;">Name (English):</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('full-name-en')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Date of Birth:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('dob')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Gender:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('gender')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Contact:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('contact')}</td></tr><tr><td style="padding: 4px 0; font-weight: bold; font-size: 8pt;">Email:</td><td style="padding: 4px 0; font-size: 8pt;">${getValue('email')}</td></tr></table></td></tr></table>` : ''}
+${fileDataStore['photo'] ? `
+<div style="border: 1px solid #ccc; padding: 8px; margin-bottom: 15px;">
+<table style="width: 100%; border: none;">
+<tr>
+  <td style="width: 140px; text-align: center; vertical-align: top; padding: 5px; border: none;">
+    <div style="font-weight: bold; margin-bottom: 5px;">PASSPORT PHOTO</div>
+    <img src="${fileDataStore['photo']}" style="width: 135px; height: 110px; object-fit: cover; border: 1px solid #999;" />
+  </td>
+  <td style="vertical-align: top; padding: 10px; border: none;">
+    <table style="width: 100%; border: none;">
+      <tr><td style="width: 130px; padding: 3px 0; font-weight: bold;">Name (English):</td><td style="padding: 3px 0;">${getValue('full-name-en')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Date of Birth:</td><td style="padding: 3px 0;">${getValue('dob')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Gender:</td><td style="padding: 3px 0;">${getValue('gender')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Contact:</td><td style="padding: 3px 0;">${getValue('contact')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Email:</td><td style="padding: 3px 0;">${getValue('email')}</td></tr>
+    </table>
+  </td>
+</tr>
+</table>
+</div>
+` : ''}
 
 <h2>Personal Information</h2>
 <table>
