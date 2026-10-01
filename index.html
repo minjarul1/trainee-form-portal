@@ -1514,23 +1514,25 @@ td.label { width: 30%; background: #fafafa; font-weight: bold; }
 <div class="subtitle">ISISC-ASSET AI Technology Project | EBT | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
 
 ${fileDataStore['photo'] ? `
-<table style="width: 100%; margin-bottom: 20px; border: 1px solid #ccc;">
+<div style="border: 1px solid #ccc; padding: 8px; margin-bottom: 15px;">
+<table style="width: 100%; border: none;">
 <tr>
-  <td style="width: 150px; text-align: center; vertical-align: top; padding: 15px; border: none;">
-    <div style="font-weight: bold; margin-bottom: 10px; font-size: 11pt;">PASSPORT PHOTO</div>
-    <img src="${fileDataStore['photo']}" style="width: 1.79in; height: 1.47in; object-fit: cover; border: 1px solid #999;" />
+  <td style="width: 140px; text-align: center; vertical-align: top; padding: 5px; border: none;">
+    <div style="font-weight: bold; margin-bottom: 5px;">PASSPORT PHOTO</div>
+    <img src="${fileDataStore['photo']}" style="width: 135px; height: 110px; object-fit: cover; border: 1px solid #999;" />
   </td>
-  <td style="vertical-align: top; padding: 15px; border: none;">
+  <td style="vertical-align: top; padding: 10px; border: none;">
     <table style="width: 100%; border: none;">
-      <tr><td style="width: 140px; padding: 4px 0; font-weight: bold; font-size: 10pt;">Name (English):</td><td style="padding: 4px 0; font-size: 10pt;">${getValue('full-name-en')}</td></tr>
-      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 10pt;">Date of Birth:</td><td style="padding: 4px 0; font-size: 10pt;">${getValue('dob')}</td></tr>
-      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 10pt;">Gender:</td><td style="padding: 4px 0; font-size: 10pt;">${getValue('gender')}</td></tr>
-      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 10pt;">Contact:</td><td style="padding: 4px 0; font-size: 10pt;">${getValue('contact')}</td></tr>
-      <tr><td style="padding: 4px 0; font-weight: bold; font-size: 10pt;">Email:</td><td style="padding: 4px 0; font-size: 10pt;">${getValue('email')}</td></tr>
+      <tr><td style="width: 130px; padding: 3px 0; font-weight: bold;">Name (English):</td><td style="padding: 3px 0;">${getValue('full-name-en')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Date of Birth:</td><td style="padding: 3px 0;">${getValue('dob')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Gender:</td><td style="padding: 3px 0;">${getValue('gender')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Contact:</td><td style="padding: 3px 0;">${getValue('contact')}</td></tr>
+      <tr><td style="padding: 3px 0; font-weight: bold;">Email:</td><td style="padding: 3px 0;">${getValue('email')}</td></tr>
     </table>
   </td>
 </tr>
 </table>
+</div>
 ` : ''}
 
 <!-- PAGE 1 -->
