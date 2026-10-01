@@ -1550,6 +1550,86 @@ ${fileDataStore['photo'] ? `
 <tr><td class="label">PWD</td><td class="value">${getValue('pwd')}</td></tr>
 <tr><td class="label">Marital Status</td><td class="value">${getValue('marital-status')}</td></tr>
 </table>
+
+<!-- PAGE 2 -->
+<h2>Address Information</h2>
+<table>
+<tr><th>Field</th><th>Details</th></tr>
+<tr><td class="label">Permanent Address</td><td class="value">${getValue('perm-address')}</td></tr>
+<tr><td class="label">Division</td><td class="value">${getValue('perm-division')}</td></tr>
+<tr><td class="label">District</td><td class="value">${getValue('perm-district')}</td></tr>
+<tr><td class="label">Upazila</td><td class="value">${getValue('perm-upazila')}</td></tr>
+<tr><td class="label">Area Type</td><td class="value">${getValue('perm-area-type')}</td></tr>
+<tr><td class="label">Post Code</td><td class="value">${getValue('perm-post-code')}</td></tr>
+</table>
+
+<!-- PAGE 3 -->
+<h2>Family Profile</h2>
+<table>
+<tr><th>Field</th><th>Details</th></tr>
+<tr><td class="label">Father (English)</td><td class="value">${getValue('father-name-en')}</td></tr>
+<tr><td class="label">Father (Bangla)</td><td class="value">${getValue('father-name-bn')}</td></tr>
+<tr><td class="label">Mother (English)</td><td class="value">${getValue('mother-name-en')}</td></tr>
+<tr><td class="label">Mother (Bangla)</td><td class="value">${getValue('mother-name-bn')}</td></tr>
+<tr><td class="label">Emergency Contact</td><td class="value">${getValue('emergency-contact')}</td></tr>
+<tr><td class="label">Household Members</td><td class="value">${getValue('household-members')}</td></tr>
+<tr><td class="label">Monthly Income</td><td class="value">${getValue('monthly-income')}</td></tr>
+<tr><td class="label">Daily Income</td><td class="value">${getValue('daily-income')}</td></tr>
+<tr><td class="label">Bank Account</td><td class="value">${getValue('has-bank-account')}</td></tr>
+<tr><td class="label">Account Name</td><td class="value">${getValue('account-name')}</td></tr>
+<tr><td class="label">Account Number</td><td class="value">${getValue('account-number')}</td></tr>
+<tr><td class="label">Bank Name</td><td class="value">${getValue('bank-name')}</td></tr>
+</table>
+
+<!-- PAGE 4 -->
+<h2>Education</h2>
+<table>
+<tr><th>Field</th><th>Details</th></tr>
+<tr><td class="label">Education Level</td><td class="value">${getValue('education-level')}</td></tr>
+<tr><td class="label">Degree/Diploma</td><td class="value">${getValue('degree-name')}</td></tr>
+<tr><td class="label">Institute</td><td class="value">${getValue('institute-name')}</td></tr>
+<tr><td class="label">Year Passing</td><td class="value">${getValue('year-passing')}</td></tr>
+<tr><td class="label">Grade/Division</td><td class="value">${getValue('grade')}</td></tr>
+<tr><td class="label">Division/Group</td><td class="value">${getValue('division-group')}</td></tr>
+</table>
+
+<!-- PAGE 5 -->
+<h2>Employment & Skills</h2>
+<table>
+<tr><th>Field</th><th>Details</th></tr>
+<tr><td class="label">Employment Status</td><td class="value">${getValue('employment-status')}</td></tr>
+<tr><td class="label">Previous Training</td><td class="value">${getValue('prev-training')}</td></tr>
+<tr><td class="label">Monthly Income</td><td class="value">${getValue('monthly-income-personal')}</td></tr>
+<tr><td class="label">Training Source</td><td class="value">${getValue('training-source')}</td></tr>
+<tr><td class="label">Work Experience</td><td class="value">${getValue('work-experience')}</td></tr>
+</table>
+
+<!-- PAGE 6 -->
+<h2>Documents Status</h2>
+<table>
+<tr><th>Document</th><th>Status</th></tr>
+<tr><td class="label">Passport Photo</td><td class="value ${isNotEmpty('photo') ? 'status-uploaded' : 'status-not-uploaded'}">${isNotEmpty('photo') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+<tr><td class="label">Bank Copy</td><td class="value">${isNotEmpty('bank-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
+</table>
+
+${fileDataStore['photo'] ? `<div style="margin-top:10px;"><div style="font-weight:bold; margin-bottom:5px;">PASSPORT PHOTO</div><img src="${fileDataStore['photo']}" style="width:80px; height:100px; object-fit:cover; border:1px solid #999;" /></div>` : ''}
+${fileDataStore['signature'] ? `<div style="margin-top:10px;"><div style="font-weight:bold; margin-bottom:5px;">SIGNATURE</div><img src="${fileDataStore['signature']}" style="width:120px; height:40px; object-fit:contain; border:1px solid #999; margin-bottom:10px;" /></div>` : ''}
+
+<div class="signature-section">
+<h2>Signatures</h2>
+<div class="sig-box">
+  <div class="sig-item">
+    <div style="font-weight:bold; margin-bottom:3px;">TRAINEE SIGNATURE</div>
+    ${fileDataStore['signature'] ? `<img src="${fileDataStore['signature']}" style="width:100%; height:40px; object-fit:contain; margin:5px 0;" />` : '<div class="sig-line"></div>'}
+    <div style="font-size:8pt; margin-top:3px;">Date: _______________</div>
+  </div>
+  <div class="sig-item">
+    <div style="font-weight:bold; margin-bottom:3px;">AUTHORIZED SIGNATORY</div>
+    <div class="sig-line"></div>
+    <div style="font-size:8pt; margin-top:3px;">Designation: ___________</div>
+  </div>
+</div>
+</div>
 </body></html>`;
 
   const blob = new Blob(['\ufeff', docHtml], {type: 'application/msword'});
