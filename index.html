@@ -1373,7 +1373,7 @@ function renderPreview() {
       <tr>
         <td style="width: 25%; text-align: center; vertical-align: top; border: none; padding: 10px;">
           <div style="font-weight: bold; margin-bottom: 8px; color: var(--text-muted); font-size: 12px;">Passport Photo</div>
-          <img src="${fileDataStore['photo']}" style="width: 1.79in; height: 1.47in; object-fit: cover; border: 1px solid #ddd; border-radius: 4px;" />
+          <img src="${fileDataStore['photo']}" style="width: 45px; height: 58px; object-fit: cover; border: 1px solid #ddd; border-radius: 2px;" />
         </td>
         <td style="width: 75%; vertical-align: top; border: none; padding: 10px;">
           <table style="width: 100%; border: none;">
@@ -1510,16 +1510,16 @@ td.label { width: 30%; background: #fafafa; font-weight: bold; }
 </head>
 <body>
 
-<h1>Trainee Registration Form</h1>
-<div class="subtitle">ISISC-ASSET AI Technology Project | EBT | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
+<h1>Ai Technology Registration</h1>
+<div class="subtitle">ISISC-ASSET | Ai Technology Registration | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
 
 ${fileDataStore['photo'] ? `
 <div style="border: 1px solid #ccc; padding: 8px; margin-bottom: 15px;">
 <table style="width: 100%; border: none;">
 <tr>
-  <td style="width: 140px; text-align: center; vertical-align: top; padding: 5px; border: none;">
+  <td style="width: 100px; text-align: center; vertical-align: top; padding: 5px; border: none;">
     <div style="font-weight: bold; margin-bottom: 5px;">PASSPORT PHOTO</div>
-    <img src="${fileDataStore['photo']}" style="width: 135px; height: 110px; object-fit: cover; border: 1px solid #999;" />
+    <img src="${fileDataStore['photo']}" style="width: 45px; height: 58px; object-fit: cover; border: 1px solid #999;" />
   </td>
   <td style="vertical-align: top; padding: 10px; border: none;">
     <table style="width: 100%; border: none;">
@@ -1614,7 +1614,7 @@ ${fileDataStore['photo'] ? `
 <tr><td class="label">Bank Copy</td><td class="value">${isNotEmpty('bank-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
 </table>
 
-${fileDataStore['photo'] ? `<div style="margin-top:10px;"><div style="font-weight:bold; margin-bottom:5px;">PASSPORT PHOTO</div><img src="${fileDataStore['photo']}" style="width:80px; height:100px; object-fit:cover; border:1px solid #999;" /></div>` : ''}
+${fileDataStore['photo'] ? `<div style="margin-top:10px;"><div style="font-weight:bold; margin-bottom:5px;">PASSPORT PHOTO</div><img src="${fileDataStore['photo']}" style="width:45px; height:58px; object-fit:cover; border:1px solid #999;" /></div>` : ''}
 ${fileDataStore['signature'] ? `<div style="margin-top:10px;"><div style="font-weight:bold; margin-bottom:5px;">SIGNATURE</div><img src="${fileDataStore['signature']}" style="width:120px; height:40px; object-fit:contain; border:1px solid #999; margin-bottom:10px;" /></div>` : ''}
 
 <div class="signature-section">
@@ -1674,16 +1674,16 @@ td.value { width: 72%; }
 </style>
 </head>
 <body>
-<h1>Trainee Registration Form</h1>
-<div class="subtitle">ISISC-ASSET AI Technology Project | EBT | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
+<h1>Ai Technology Registration</h1>
+<div class="subtitle">ISISC-ASSET | Ai Technology Registration | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
 
 ${fileDataStore['photo'] ? `
 <div style="border: 1px solid #ccc; padding: 8px; margin-bottom: 15px;">
 <table style="width: 100%; border: none;">
 <tr>
-  <td style="width: 140px; text-align: center; vertical-align: top; padding: 5px; border: none;">
+  <td style="width: 100px; text-align: center; vertical-align: top; padding: 5px; border: none;">
     <div style="font-weight: bold; margin-bottom: 5px;">PASSPORT PHOTO</div>
-    <img src="${fileDataStore['photo']}" style="width: 135px; height: 110px; object-fit: cover; border: 1px solid #999;" />
+    <img src="${fileDataStore['photo']}" style="width: 45px; height: 58px; object-fit: cover; border: 1px solid #999;" />
   </td>
   <td style="vertical-align: top; padding: 10px; border: none;">
     <table style="width: 100%; border: none;">
@@ -1750,7 +1750,7 @@ ${fileDataStore['photo'] ? `
 ${fileDataStore['photo'] ? `
 <div style="margin-top:10px;">
   <div style="font-weight:bold; margin-bottom:5px; font-size:8pt;">PASSPORT PHOTO</div>
-  <img src="${fileDataStore['photo']}" style="width:80px; height:100px; object-fit:cover; border:1px solid #999;" />
+  <img src="${fileDataStore['photo']}" style="width:45px; height:58px; object-fit:cover; border:1px solid #999;" />
 </div>
 ` : ''}
 
@@ -1819,16 +1819,16 @@ td.value { width: 72%; }
 </style>
 </head>
 <body>
-<h1>Trainee Registration Form</h1>
-<div class="subtitle">ISISC-ASSET AI Technology Project | EBT | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
+<h1>Ai Technology Registration</h1>
+<div class="subtitle">ISISC-ASSET | Ai Technology Registration | Generated: ${new Date().toLocaleDateString('en-GB')}</div>
 
 ${fileDataStore['photo'] ? `
 <div style="border: 1px solid #ccc; padding: 8px; margin-bottom: 15px;">
 <table style="width: 100%; border: none;">
 <tr>
-  <td style="width: 140px; text-align: center; vertical-align: top; padding: 5px; border: none;">
+  <td style="width: 100px; text-align: center; vertical-align: top; padding: 5px; border: none;">
     <div style="font-weight: bold; margin-bottom: 5px;">PASSPORT PHOTO</div>
-    <img src="${fileDataStore['photo']}" style="width: 135px; height: 110px; object-fit: cover; border: 1px solid #999;" />
+    <img src="${fileDataStore['photo']}" style="width: 45px; height: 58px; object-fit: cover; border: 1px solid #999;" />
   </td>
   <td style="vertical-align: top; padding: 10px; border: none;">
     <table style="width: 100%; border: none;">
@@ -1919,7 +1919,7 @@ ${fileDataStore['photo'] ? `
 <tr><td class="label">Bank Copy</td><td class="value">${isNotEmpty('bank-doc') ? 'UPLOADED' : 'NOT UPLOADED'}</td></tr>
 </table>
 
-${fileDataStore['photo'] ? `<div style="margin-top:10px;"><div style="font-weight:bold; margin-bottom:5px; font-size:8pt;">PASSPORT PHOTO</div><img src="${fileDataStore['photo']}" style="width:80px; height:100px; object-fit:cover; border:1px solid #999;" /></div>` : ''}
+${fileDataStore['photo'] ? `<div style="margin-top:10px;"><div style="font-weight:bold; margin-bottom:5px; font-size:8pt;">PASSPORT PHOTO</div><img src="${fileDataStore['photo']}" style="width:45px; height:58px; object-fit:cover; border:1px solid #999;" /></div>` : ''}
 ${fileDataStore['signature'] ? `<div style="margin-top:10px;"><div style="font-weight:bold; margin-bottom:5px; font-size:8pt;">SIGNATURE</div><img src="${fileDataStore['signature']}" style="width:120px; height:40px; object-fit:contain; border:1px solid #999; margin-bottom:10px;" /></div>` : ''}
 
 <div class="signature-section">
