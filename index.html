@@ -1497,7 +1497,7 @@ function exportWord() {
 <meta charset="utf-8">
 <title>Trainee Registration Form</title>
 <style>
-@page { size: A4; margin: 0.5in; }
+@page { size: A4; margin: 0.3in; }
 body { font-family: Arial, sans-serif; font-size: 10pt; color: #000; line-height: 1.3; }
 h1 { text-align: center; font-size: 16pt; font-weight: bold; margin: 0 0 10px 0; }
 .subtitle { text-align: center; font-size: 10pt; color: #666; margin: 0 0 15px 0; }
@@ -1654,15 +1654,15 @@ function exportPDF() {
 <meta charset="utf-8">
 <title>Trainee Registration Form</title>
 <style>
-@page { size: A4; margin: 0.5in; }
-body { font-family: 'Courier New', Courier, monospace; font-size: 8pt; color: #000; line-height: 1.3; margin: 0; padding: 0; }
-h1 { text-align: center; font-size: 14pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase; letter-spacing: 1px; }
-.subtitle { text-align: center; font-size: 7pt; color: #666; margin: 0 0 8px 0; }
+@page { size: A4; margin: 0.3in; }
+body { font-family: 'Courier New', Courier, monospace; font-size: 7.5pt; color: #000; line-height: 1.2; margin: 0; padding: 0; }
+h1 { text-align: center; font-size: 12pt; font-weight: bold; margin: 0 0 2px 0; text-transform: uppercase; letter-spacing: 1px; }
+.subtitle { text-align: center; font-size: 6pt; color: #666; margin: 0 0 4px 0; }
 .page-break { page-break-after: always; }
-h2 { font-size: 9pt; font-weight: bold; margin: 8px 0 4px 0; padding: 3px 6px; background: #f0f0f0; border-left: 3px solid #333; text-transform: uppercase; }
-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 7.5pt; }
-th { background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 28%; }
-td { padding: 3px 6px; border: 1px solid #999; vertical-align: middle; }
+h2 { font-size: 8pt; font-weight: bold; margin: 4px 0 2px 0; padding: 2px 4px; background: #f0f0f0; border-left: 3px solid #333; text-transform: uppercase; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 4px; font-size: 7pt; }
+th { background: #e8e8e8; padding: 2px 4px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 6.5pt; width: 28%; }
+td { padding: 2px 4px; border: 1px solid #999; vertical-align: middle; }
 td.label { background: #fafafa; font-weight: bold; }
 td.value { width: 72%; }
 .signature-section { margin-top: 15px; }
@@ -1799,15 +1799,15 @@ function exportPDF() {
 <meta charset="utf-8">
 <title>Trainee Registration Form</title>
 <style>
-@page { size: A4; margin: 0.5in; }
-body { font-family: 'Courier New', Courier, monospace; font-size: 8pt; color: #000; line-height: 1.3; margin: 0; padding: 0; }
-h1 { text-align: center; font-size: 14pt; font-weight: bold; margin: 0 0 3px 0; text-transform: uppercase; letter-spacing: 1px; }
-.subtitle { text-align: center; font-size: 7pt; color: #666; margin: 0 0 8px 0; }
+@page { size: A4; margin: 0.3in; }
+body { font-family: 'Courier New', Courier, monospace; font-size: 7.5pt; color: #000; line-height: 1.2; margin: 0; padding: 0; }
+h1 { text-align: center; font-size: 12pt; font-weight: bold; margin: 0 0 2px 0; text-transform: uppercase; letter-spacing: 1px; }
+.subtitle { text-align: center; font-size: 6pt; color: #666; margin: 0 0 4px 0; }
 .page-break { page-break-after: always; }
-h2 { font-size: 9pt; font-weight: bold; margin: 8px 0 4px 0; padding: 3px 6px; background: #f0f0f0; border-left: 3px solid #333; text-transform: uppercase; }
-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 7.5pt; }
-th { background: #e8e8e8; padding: 4px 6px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 7pt; width: 28%; }
-td { padding: 3px 6px; border: 1px solid #999; vertical-align: middle; }
+h2 { font-size: 8pt; font-weight: bold; margin: 4px 0 2px 0; padding: 2px 4px; background: #f0f0f0; border-left: 3px solid #333; text-transform: uppercase; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 4px; font-size: 7pt; }
+th { background: #e8e8e8; padding: 2px 4px; text-align: left; font-weight: bold; border: 1px solid #999; font-size: 6.5pt; width: 28%; }
+td { padding: 2px 4px; border: 1px solid #999; vertical-align: middle; }
 td.label { background: #fafafa; font-weight: bold; }
 td.value { width: 72%; }
 .signature-section { margin-top: 15px; }
@@ -1871,8 +1871,6 @@ ${fileDataStore['photo'] ? `
 <tr><td class="label">Area Type</td><td class="value">${getValue('perm-area-type')}</td></tr>
 <tr><td class="label">Post Code</td><td class="value">${getValue('perm-post-code')}</td></tr>
 </table>
-
-<div class="page-break"></div>
 
 <h2>Family Profile</h2>
 <table>
